@@ -39,7 +39,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const &food) {
+void Renderer::Render(Maze const maze, Snake const snake, SDL_Point const &food) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
@@ -47,6 +47,48 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   // Clear screen
   SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
   SDL_RenderClear(sdl_renderer);
+
+  // Render maze
+  for (int j = 0; j < maze.getH(); j++) {
+    for (int i = 0; i < maze.getW(); i++) {
+      switch (maze.getPosType(i, j)) {
+        case Maze::PosType::kWall:
+          SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x00, 0xFF, 0xFF); // blue
+          break;
+        case Maze::PosType::kGate:
+          SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white
+          break;
+        default:
+          SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x00, 0x00, 0xFF); // black
+      }
+      block.x = i * block.w;
+      block.y = j * block.h;
+      SDL_RenderFillRect(sdl_renderer, &block);
+    }
+  }
+
+  // Render food
+  SDL_Rect fblock;
+  SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white
+  for (int j = 0; j < maze.getH(); j++) {
+    for (int i = 0; i < maze.getW(); i++) {
+      switch (maze.getPosType(i, j)) {
+        case Maze::PosType::kFood:
+          fblock.w = block.w / 8;
+          fblock.h = block.h / 8;
+          fblock.x = i * block.w + block.w * 7 / 16;
+          fblock.y = j * block.h + block.h * 7 / 16;
+          SDL_RenderFillRect(sdl_renderer, &fblock);
+          break;
+        case Maze::PosType::kPowFood:
+          fblock.w = block.w / 4;
+          fblock.h = block.h / 4;
+          fblock.x = i * block.w + block.w * 3 / 8;
+          fblock.y = j * block.h + block.h * 3 / 8;
+          SDL_RenderFillRect(sdl_renderer, &fblock);
+      }
+    }
+  }
 
   // Render food
   SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xCC, 0x00, 0xFF);
