@@ -8,6 +8,8 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
       random_w(0, static_cast<int>(grid_width)),
       random_h(0, static_cast<int>(grid_height)) {
   _maze.generateMaze();
+  snake.head_x = _maze.getPacmanSpawnX();
+  snake.head_y = _maze.getPacmanSpawnY();
   PlaceFood();
 }
 
@@ -69,7 +71,7 @@ void Game::PlaceFood() {
 void Game::Update() {
   if (!snake.alive) return;
 
-  snake.Update();
+  snake.Update(_maze);
 
   int new_x = static_cast<int>(snake.head_x);
   int new_y = static_cast<int>(snake.head_y);

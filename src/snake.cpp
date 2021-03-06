@@ -2,33 +2,41 @@
 #include <cmath>
 #include <iostream>
 
-void Snake::Update() {
+void Snake::Update(const Maze &maze) {
   SDL_Point prev_cell{
       static_cast<int>(head_x),
       static_cast<int>(
           head_y)};  // We first capture the head's cell before updating.
-  UpdateHead();
+  UpdateHead(maze);
   SDL_Point current_cell{
       static_cast<int>(head_x),
       static_cast<int>(head_y)};  // Capture the head's cell after updating.
 }
 
-void Snake::UpdateHead() {
+void Snake::UpdateHead(const Maze &maze) {
   switch (direction) {
     case Direction::kUp:
-      head_y -= speed;
+      if (maze.isAvailable(head_x, head_y, Maze::Direction::kUp)) {
+        head_y -= speed;
+      }
       break;
 
     case Direction::kDown:
-      head_y += speed;
+      if (maze.isAvailable(head_x, head_y, Maze::Direction::kDown)) {
+        head_y += speed;
+      }
       break;
 
     case Direction::kLeft:
-      head_x -= speed;
+      if (maze.isAvailable(head_x, head_y, Maze::Direction::kLeft)) {
+        head_x -= speed;
+      }
       break;
 
     case Direction::kRight:
-      head_x += speed;
+      if (maze.isAvailable(head_x, head_y, Maze::Direction::kRight)) {
+        head_x += speed;
+      }
       break;
   }
 
