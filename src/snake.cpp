@@ -3,46 +3,47 @@
 #include <iostream>
 
 void Snake::Update(const Maze &maze) {
-  SDL_Point prev_cell{
-      static_cast<int>(head_x),
-      static_cast<int>(
-          head_y)};  // We first capture the head's cell before updating.
-  UpdateHead(maze);
-  SDL_Point current_cell{
-      static_cast<int>(head_x),
-      static_cast<int>(head_y)};  // Capture the head's cell after updating.
+  if (Move(direction, maze)) {
+    hold_direction = direction;
+  } else {
+    Move(hold_direction, maze);
+  }
 }
 
-void Snake::UpdateHead(const Maze &maze) {
-  switch (direction) {
+bool Snake::Move(Direction d, const Maze &maze) {
+  bool wasMoved = false;
+  switch (d) {
     case Direction::kUp:
       if (maze.isAvailable(head_x, head_y, Maze::Direction::kUp)) {
         head_y -= speed;
+        wasMoved = true;
       }
       break;
-
     case Direction::kDown:
       if (maze.isAvailable(head_x, head_y, Maze::Direction::kDown)) {
         head_y += speed;
+        wasMoved = true;
       }
       break;
-
     case Direction::kLeft:
       if (maze.isAvailable(head_x, head_y, Maze::Direction::kLeft)) {
         head_x -= speed;
+        wasMoved = true;
       }
       break;
-
     case Direction::kRight:
       if (maze.isAvailable(head_x, head_y, Maze::Direction::kRight)) {
         head_x += speed;
+        wasMoved = true;
       }
       break;
   }
-
-  // Wrap the Snake around to the beginning if going off of the screen.
-  head_x = fmod(head_x + grid_width, grid_width);
-  head_y = fmod(head_y + grid_height, grid_height);
+  if (wasMoved == true) {
+    // Wrap the Snake around to the beginning if going off of the screen.
+    head_x = fmod(head_x + grid_width, grid_width);
+    head_y = fmod(head_y + grid_height, grid_height);
+  }
+  return wasMoved;
 }
 
 void Snake::GrowBody() { growing = true; }

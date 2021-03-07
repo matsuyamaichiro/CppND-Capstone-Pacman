@@ -29,7 +29,8 @@ class Snake {
   float head_y;
 
  private:
-  void UpdateHead(const Maze &maze);
+  bool Move(Direction d, const Maze &maze);
+  Direction hold_direction = Direction::kLeft;
 
   bool growing{false};
   int grid_width;
