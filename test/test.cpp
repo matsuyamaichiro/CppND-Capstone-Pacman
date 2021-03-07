@@ -9,6 +9,7 @@ TEST(Maze, Whole) {
     maze.generateMaze();
     EXPECT_EQ(maze.getH(), 30);
     EXPECT_EQ(maze.getW(), 28);
+    EXPECT_EQ(maze.GetFoodNum(), 240);
     // test pacman spawn position
     EXPECT_EQ(maze.getPacmanSpawnX(), 14);
     EXPECT_EQ(maze.getPacmanSpawnY(), 23);
@@ -45,6 +46,7 @@ TEST(Maze, Whole) {
     // test clear food
     EXPECT_EQ(maze.getPosType(26, 1), Maze::PosType::kFood);
     maze.clearFood(26, 1);
+    EXPECT_EQ(maze.GetFoodNum(), 239);
     EXPECT_EQ(maze.getPosType(26, 1), Maze::PosType::kBlank);
     EXPECT_EQ(maze.getPosType(26, 3), Maze::PosType::kPowFood);
     maze.clearFood(26, 3);
@@ -58,6 +60,20 @@ TEST(Maze, Whole) {
     EXPECT_EQ(maze.getPosType(14, 12), Maze::PosType::kGate);
     maze.clearFood(14, 12);
     EXPECT_EQ(maze.getPosType(14, 12), Maze::PosType::kGate);
+    for (int j = 0; j < 30; j++) {
+        for (int i = 0; i < 28; i++) {
+            switch (maze.getPosType(i, j)) {
+                case Maze::PosType::kFood:
+                case Maze::PosType::kPowFood:
+                    maze.clearFood(i, j);
+            }
+        }
+    }
+    EXPECT_EQ(maze.GetFoodNum(), 0);
+    // test growing
+    EXPECT_EQ(maze.IsGrowing(), false);
+    maze.GrowWall();
+    EXPECT_EQ(maze.IsGrowing(), true);
 }
 
 TEST(Snake, Whole) {

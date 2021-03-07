@@ -15,6 +15,9 @@ class Maze {
         PosType getPosType(int x, int y) const;
         bool isAvailable(int x, int y, Direction d) const;
         void clearFood(int x, int y);
+        int GetFoodNum() const;
+        void GrowWall();
+        bool IsGrowing() const;
 
     private:
         int _w;
@@ -22,6 +25,8 @@ class Maze {
         int _pacman_spawn_x;
         int _pacman_spawn_y;
         std::vector<std::vector<PosType>> _maze;
+        int _food_num{0};
+        bool _growing{false};
 };
 
 #endif

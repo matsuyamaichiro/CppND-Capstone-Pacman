@@ -62,6 +62,11 @@ void Maze::generateMaze() {
                 _maze[j][i] = Maze::PosType::kBlank;
             } else if (k < sizeof(type_encode)/sizeof(Maze::PosType)) {
                 _maze[j][i] = type_encode[k];
+                switch (_maze[j][i]) {
+                    case Maze::PosType::kFood:
+                    case Maze::PosType::kPowFood:
+                        _food_num++;
+                }
             } else {
                 _maze[j][i] = Maze::PosType::kWall;
             }
@@ -135,5 +140,20 @@ void Maze::clearFood(int x, int y) {
         case Maze::PosType::kFood:
         case Maze::PosType::kPowFood:
             _maze[y][x] = Maze::PosType::kBlank;
+            if (_food_num > 0) {
+                _food_num--;
+            }
     }
+}
+
+int Maze::GetFoodNum() const {
+    return _food_num;
+}
+
+void Maze::GrowWall() {
+    _growing = true;
+}
+
+bool Maze::IsGrowing() const {
+    return _growing;
 }

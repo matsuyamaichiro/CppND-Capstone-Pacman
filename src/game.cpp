@@ -53,6 +53,10 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
 void Game::Update() {
   if (!snake.alive) return;
+  if (_maze.GetFoodNum() == 0) {
+    _maze.GrowWall();
+    return;
+  }
 
   snake.Update(_maze);
 

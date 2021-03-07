@@ -53,7 +53,11 @@ void Renderer::Render(Maze const maze, Snake const snake, SDL_Point const &food)
     for (int i = 0; i < maze.getW(); i++) {
       switch (maze.getPosType(i, j)) {
         case Maze::PosType::kWall:
-          SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x00, 0xFF, 0xFF); // blue
+          if (maze.IsGrowing()) {
+            SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF); // write
+          } else {
+            SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x00, 0xFF, 0xFF); // blue
+          }
           break;
         case Maze::PosType::kGate:
           SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white
