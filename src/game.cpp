@@ -10,7 +10,6 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
   _maze.generateMaze();
   snake.head_x = _maze.getPacmanSpawnX();
   snake.head_y = _maze.getPacmanSpawnY();
-  PlaceFood();
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -53,21 +52,6 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   }
 }
 
-void Game::PlaceFood() {
-  int x, y;
-  while (true) {
-    x = random_w(engine);
-    y = random_h(engine);
-    // Check that the location is not occupied by a snake item before placing
-    // food.
-    if (!snake.SnakeCell(x, y)) {
-      food.x = x;
-      food.y = y;
-      return;
-    }
-  }
-}
-
 void Game::Update() {
   if (!snake.alive) return;
 
@@ -77,12 +61,14 @@ void Game::Update() {
   int new_y = static_cast<int>(snake.head_y);
 
   // Check if there's food over here
-  if (food.x == new_x && food.y == new_y) {
-    score++;
-    PlaceFood();
-    // Grow snake and increase speed.
-    snake.GrowBody();
-    snake.speed += 0.02;
+  switch (_maze.getPosType(new_x, new_y)) {
+    case Maze::PosType::kFood:
+      _maze.clearFood(new_x, new_y);
+      score++;
+      break;
+    case Maze::PosType::kPowFood:
+      _maze.clearFood(new_x, new_y);
+      score++;
   }
 }
 

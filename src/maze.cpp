@@ -129,3 +129,11 @@ bool Maze::isAvailable(int x, int y, Direction d) const {
     }
     return true;
 }
+
+void Maze::clearFood(int x, int y) {
+    switch (getPosType(x, y)) {
+        case Maze::PosType::kFood:
+        case Maze::PosType::kPowFood:
+            _maze[y][x] = Maze::PosType::kBlank;
+    }
+}

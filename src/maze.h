@@ -14,6 +14,7 @@ class Maze {
         int getPacmanSpawnY() const;
         PosType getPosType(int x, int y) const;
         bool isAvailable(int x, int y, Direction d) const;
+        void clearFood(int x, int y);
 
     private:
         int _w;

@@ -41,4 +41,20 @@ TEST(Maze, Whole) {
     EXPECT_FALSE(maze.isAvailable(27, 14, Maze::Direction::kDown));
     EXPECT_TRUE(maze.isAvailable(27, 14, Maze::Direction::kLeft));
     EXPECT_TRUE(maze.isAvailable(27, 14, Maze::Direction::kRight));
+    // test clear food
+    EXPECT_EQ(maze.getPosType(26, 1), Maze::PosType::kFood);
+    maze.clearFood(26, 1);
+    EXPECT_EQ(maze.getPosType(26, 1), Maze::PosType::kBlank);
+    EXPECT_EQ(maze.getPosType(26, 3), Maze::PosType::kPowFood);
+    maze.clearFood(26, 3);
+    EXPECT_EQ(maze.getPosType(26, 3), Maze::PosType::kBlank);
+    EXPECT_EQ(maze.getPosType(26, 0), Maze::PosType::kWall);
+    maze.clearFood(26, 0);
+    EXPECT_EQ(maze.getPosType(26, 0), Maze::PosType::kWall);
+    EXPECT_EQ(maze.getPosType(14, 11), Maze::PosType::kBlank);
+    maze.clearFood(14, 11);
+    EXPECT_EQ(maze.getPosType(14, 11), Maze::PosType::kBlank);
+    EXPECT_EQ(maze.getPosType(14, 12), Maze::PosType::kGate);
+    maze.clearFood(14, 12);
+    EXPECT_EQ(maze.getPosType(14, 12), Maze::PosType::kGate);
 }
