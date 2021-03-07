@@ -71,7 +71,7 @@ TEST(Snake, Whole) {
     //    14
     // 23  o
     snake.SetPos(14, 23);
-    snake.direction = Snake::Direction::kLeft;
+    snake.SetDirection(Snake::Direction::kLeft);
     EXPECT_FLOAT_EQ(snake.GetX(), 14.0);
     EXPECT_FLOAT_EQ(snake.GetY(), 23.0);
     // position after 1 tick
@@ -114,9 +114,9 @@ TEST(Snake, Whole) {
     // 21  | 0 0 
     // 22  | 0
     // 23  o 0
-    snake.direction = Snake::Direction::kUp;
+    snake.SetDirection(Snake::Direction::kUp);
     snake.Update(maze);
-    snake.direction = Snake::Direction::kRight;
+    snake.SetDirection(Snake::Direction::kRight);
     for (int i = 0; i < 15 + 16 * 4; i++) {
         snake.Update(maze);
     }
@@ -128,9 +128,9 @@ TEST(Snake, Whole) {
     // 12  2 2 0 0 0 | 0
     // 13          0 o 0
     snake.SetPos(13, 11);
-    snake.direction = Snake::Direction::kRight;
+    snake.SetDirection(Snake::Direction::kRight);
     snake.Update(maze);
-    snake.direction = Snake::Direction::kDown;
+    snake.SetDirection(Snake::Direction::kDown);
     for (int i = 0; i < 15 + 16 * 6; i++) {
         snake.Update(maze);
     }
@@ -140,7 +140,7 @@ TEST(Snake, Whole) {
     //       0       27
     // 14 -->o        o->
     snake.SetPos(27, 14);
-    snake.direction = Snake::Direction::kRight;
+    snake.SetDirection(Snake::Direction::kRight);
     for (int i = 0; i < 16; i++) {
         snake.Update(maze);
     }
@@ -150,7 +150,7 @@ TEST(Snake, Whole) {
     //       0       27
     // 14 <--o        o<-
     snake.SetPos(0, 14);
-    snake.direction = Snake::Direction::kLeft;
+    snake.SetDirection(Snake::Direction::kLeft);
     for (int i = 0; i < 16; i++) {
         snake.Update(maze);
     }

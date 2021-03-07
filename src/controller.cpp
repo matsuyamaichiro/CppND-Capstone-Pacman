@@ -4,7 +4,7 @@
 #include "snake.h"
 
 void Controller::ChangeDirection(Snake &snake, Snake::Direction input) const {
-  snake.direction = input;
+  snake.SetDirection(input);
   return;
 }
 

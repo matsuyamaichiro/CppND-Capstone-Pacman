@@ -3,10 +3,10 @@
 #include <iostream>
 
 void Snake::Update(const Maze &maze) {
-  if (Move(direction, maze)) {
-    hold_direction = direction;
+  if (Move(_direction, maze)) {
+    _hold_direction = _direction;
   } else {
-    Move(hold_direction, maze);
+    Move(_hold_direction, maze);
   }
 }
 
@@ -21,6 +21,10 @@ float Snake::GetX() const {
 
 float Snake::GetY() const {
   return _y;
+}
+
+void Snake::SetDirection(Snake::Direction d) {
+  _direction = d;
 }
 
 bool Snake::Move(Direction d, const Maze &maze) {
