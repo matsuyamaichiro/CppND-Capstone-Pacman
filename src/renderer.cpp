@@ -94,12 +94,6 @@ void Renderer::Render(Maze const maze, Snake const snake, SDL_Point const &food)
     }
   }
 
-  // Render food
-  SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xCC, 0x00, 0xFF);
-  block.x = food.x * block.w;
-  block.y = food.y * block.h;
-  SDL_RenderFillRect(sdl_renderer, &block);
-
   // Render snake's head
   block.x = static_cast<int>(snake.GetX() * block.w);
   block.y = static_cast<int>(snake.GetY() * block.h);
