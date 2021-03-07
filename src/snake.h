@@ -12,21 +12,21 @@ class Snake {
   Snake(int grid_width, int grid_height)
       : grid_width(grid_width),
         grid_height(grid_height),
-        head_x(grid_width / 2),
-        head_y(grid_height / 2) {}
+        _x(grid_width / 2),
+        _y(grid_height / 2) {}
 
   void Update(const Maze &maze);
+  void SetPos(int x, int y);
+  float GetX() const;
+  float GetY() const;
 
   void GrowBody();
   bool SnakeCell(int x, int y);
 
   Direction direction = Direction::kLeft;
 
-  float speed{0.1f};
   int size{1};
   bool alive{true};
-  float head_x;
-  float head_y;
 
  private:
   bool Move(Direction d, const Maze &maze);
@@ -35,6 +35,9 @@ class Snake {
   bool growing{false};
   int grid_width;
   int grid_height;
+  float _speed{(float)1/16}; // should be 1/(2^n)
+  float _x;
+  float _y;
 };
 
 #endif

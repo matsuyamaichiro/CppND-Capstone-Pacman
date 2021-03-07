@@ -8,8 +8,7 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
       random_w(0, static_cast<int>(grid_width)),
       random_h(0, static_cast<int>(grid_height)) {
   _maze.generateMaze();
-  snake.head_x = _maze.getPacmanSpawnX();
-  snake.head_y = _maze.getPacmanSpawnY();
+  snake.SetPos(_maze.getPacmanSpawnX(), _maze.getPacmanSpawnY());
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -57,10 +56,25 @@ void Game::Update() {
 
   snake.Update(_maze);
 
-  int new_x = static_cast<int>(snake.head_x);
-  int new_y = static_cast<int>(snake.head_y);
+  int new_x = static_cast<int>(snake.GetX() + 0.5);
+  int new_y = static_cast<int>(snake.GetY() + 0.5);
 
   // Check if there's food over here
+  //
+  // sample case figure (Food has not been eaten)
+  // (#: Wall, o: Packman, x: Origin of Pacman, $: Food, X: Origin of Food)
+  //   0        1       2       
+  // 4 #########        ########
+  //   #########        ########
+  // 5 X       xoooooo         
+  //      $$   oooooooo       
+  //      $$   oooooooo       
+  //            oooooo        
+  // 6 #########################
+  //   #########################
+  // (_x = 0.825, new_x = 1)
+  // (_y = 5.000, new_y = 5)
+  //
   switch (_maze.getPosType(new_x, new_y)) {
     case Maze::PosType::kFood:
       _maze.clearFood(new_x, new_y);

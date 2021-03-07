@@ -18,5 +18,5 @@ add_executable(SnakeGame src/main.cpp src/game.cpp src/controller.cpp src/render
 string(STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
 target_link_libraries(SnakeGame ${SDL2_LIBRARIES})
 
-add_executable(test test/test.cpp src/maze.cpp)
+add_executable(test test/test.cpp src/maze.cpp src/snake.cpp)
 target_link_libraries(test gtest_main)

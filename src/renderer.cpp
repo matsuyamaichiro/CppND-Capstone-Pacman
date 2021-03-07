@@ -97,8 +97,8 @@ void Renderer::Render(Maze const maze, Snake const snake, SDL_Point const &food)
   SDL_RenderFillRect(sdl_renderer, &block);
 
   // Render snake's head
-  block.x = static_cast<int>(snake.head_x) * block.w;
-  block.y = static_cast<int>(snake.head_y) * block.h;
+  block.x = static_cast<int>(snake.GetX() * block.w);
+  block.y = static_cast<int>(snake.GetY() * block.h);
   if (snake.alive) {
     SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0x00, 0xFF); // yellow
   } else {
