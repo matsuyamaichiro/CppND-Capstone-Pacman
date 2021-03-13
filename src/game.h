@@ -2,7 +2,6 @@
 #define GAME_H
 
 #include <random>
-#include "SDL.h"
 #include "controller.h"
 #include "renderer.h"
 #include "pacman.h"
@@ -21,8 +20,6 @@ class Game {
  private:
   Maze _maze;
   Pacman pacman;
-  SDL_Point food;
-
   std::random_device dev;
   std::mt19937 engine;
 

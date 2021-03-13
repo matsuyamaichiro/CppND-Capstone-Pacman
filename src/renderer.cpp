@@ -39,7 +39,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Maze const maze, Snake const snake, SDL_Point const &food) {
+void Renderer::Render(Maze const maze, Snake const snake) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
