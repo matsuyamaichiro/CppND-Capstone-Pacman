@@ -1,6 +1,5 @@
 #include "snake.h"
 #include <cmath>
-#include <iostream>
 
 void Snake::Update(const Maze &maze) {
   if (Move(_direction, maze)) {
@@ -88,14 +87,4 @@ bool Snake::Move(Direction d, const Maze &maze) {
     _y = fmod(_y + maze.getH(), maze.getH());
   }
   return wasMoved;
-}
-
-void Snake::GrowBody() { growing = true; }
-
-// Inefficient method to check if cell is occupied by snake.
-bool Snake::SnakeCell(int x, int y) {
-  if (x == static_cast<int>(_x) && y == static_cast<int>(_y)) {
-    return true;
-  }
-  return false;
 }
