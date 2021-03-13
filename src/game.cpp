@@ -2,12 +2,7 @@
 #include <iostream>
 #include "SDL.h"
 
-Game::Game(std::string filename, std::size_t grid_width, std::size_t grid_height)
-    : snake(grid_width, grid_height),
-      engine(dev()),
-      random_w(0, static_cast<int>(grid_width)),
-      random_h(0, static_cast<int>(grid_height)),
-      _maze(filename) {
+Game::Game(std::string filename) : engine(dev()), _maze(filename) {
   snake.SetPos(_maze.getPacmanSpawnX(), _maze.getPacmanSpawnY());
 }
 
@@ -91,3 +86,11 @@ void Game::Update() {
 }
 
 int Game::GetScore() const { return score; }
+
+int Game::GetGridW() const {
+  return _maze.getW();
+}
+
+int Game::GetGridH() const {
+  return _maze.getH();
+}

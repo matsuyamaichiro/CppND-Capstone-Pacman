@@ -7,10 +7,7 @@
 int main(int argc, char *argv[]) {
   constexpr std::size_t kFramesPerSecond{60};
   constexpr std::size_t kMsPerFrame{1000 / kFramesPerSecond};
-  constexpr std::size_t kScreenWidth{560};
-  constexpr std::size_t kScreenHeight{600};
-  constexpr std::size_t kGridWidth{28};
-  constexpr std::size_t kGridHeight{30};
+  constexpr int kGridSize{20};
 
   std::string filename;
   if (argc >= 2) {
@@ -20,8 +17,12 @@ int main(int argc, char *argv[]) {
     std::cerr << "trying to open " << filename << std::endl;
   }
   try {
-    Game game(filename, kGridWidth, kGridHeight);
-    Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
+    Game game(filename);
+    std::size_t grid_width = game.GetGridW();
+    std::size_t grid_height = game.GetGridH();
+    std::size_t screen_width = grid_width * kGridSize;
+    std::size_t screen_height = grid_height * kGridSize;
+    Renderer renderer(screen_width, screen_height, grid_width, grid_height);
     Controller controller;
     game.Run(controller, renderer, kMsPerFrame);
     std::cout << "Game has terminated successfully!\n";

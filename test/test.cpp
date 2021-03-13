@@ -81,7 +81,7 @@ TEST(Snake, Whole) {
     constexpr std::size_t kGridHeight{30};
     // based on current maze
     Maze maze("../src/maze.csv");
-    Snake snake(kGridWidth, kGridHeight);
+    Snake snake;
     // initial position
     //    14
     // 23  o
@@ -194,6 +194,6 @@ TEST(Maze, NoCsv) {
 }
 
 TEST(Game, Whole) {
-    ASSERT_THROW(Game game("", 28, 30), std::invalid_argument);
-    ASSERT_NO_THROW(Game game("../src/maze.csv", 28, 30));
+    ASSERT_THROW(Game game(""), std::invalid_argument);
+    ASSERT_NO_THROW(Game game("../src/maze.csv"));
 }

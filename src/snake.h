@@ -9,12 +9,6 @@ class Snake {
  public:
   enum class Direction { kUp, kDown, kLeft, kRight };
 
-  Snake(int grid_width, int grid_height)
-      : grid_width(grid_width),
-        grid_height(grid_height),
-        _x(grid_width / 2),
-        _y(grid_height / 2) {}
-
   void Update(const Maze &maze);
   void SetPos(int x, int y);
   float GetX() const;
@@ -30,11 +24,9 @@ class Snake {
   Direction _hold_direction{Direction::kLeft};
 
   bool growing{false};
-  int grid_width;
-  int grid_height;
   float _speed{(float)1/16}; // should be 1/(2^n)
-  float _x;
-  float _y;
+  float _x{0};
+  float _y{0};
 };
 
 #endif

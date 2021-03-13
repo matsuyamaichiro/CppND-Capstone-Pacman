@@ -84,8 +84,8 @@ bool Snake::Move(Direction d, const Maze &maze) {
   }
   if (wasMoved == true) {
     // Wrap the Snake around to the beginning if going off of the screen.
-    _x = fmod(_x + grid_width, grid_width);
-    _y = fmod(_y + grid_height, grid_height);
+    _x = fmod(_x + maze.getW(), maze.getW());
+    _y = fmod(_y + maze.getH(), maze.getH());
   }
   return wasMoved;
 }
