@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "../src/maze.h"
-#include "../src/snake.h"
+#include "../src/pacman.h"
 #include "../src/game.h"
 
 class MazeTest : public ::testing::Test {
@@ -96,97 +96,97 @@ TEST_F(MazeTest, Growing) {
     EXPECT_EQ(maze->IsGrowing(), true);
 }
 
-TEST_F(MazeTest, SnakeMoving) {
-    Snake snake;
+TEST_F(MazeTest, PacmanMoving) {
+    Pacman pacman;
     // initial position
     //    14
     // 23  o
-    snake.SetPos(14, 23);
-    snake.SetDirection(Snake::Direction::kLeft);
-    EXPECT_FLOAT_EQ(snake.GetX(), 14.0);
-    EXPECT_FLOAT_EQ(snake.GetY(), 23.0);
+    pacman.SetPos(14, 23);
+    pacman.SetDirection(Pacman::Direction::kLeft);
+    EXPECT_FLOAT_EQ(pacman.GetX(), 14.0);
+    EXPECT_FLOAT_EQ(pacman.GetY(), 23.0);
     // position after 1 tick
     //    13  14
     // 23     oo
-    snake.Update(*maze);
-    EXPECT_FLOAT_EQ(snake.GetX(), 14.0 - 1.0/16);
-    EXPECT_FLOAT_EQ(snake.GetY(), 23.0);
+    pacman.Update(*maze);
+    EXPECT_FLOAT_EQ(pacman.GetX(), 14.0 - 1.0/16);
+    EXPECT_FLOAT_EQ(pacman.GetY(), 23.0);
     // position after moving 1 grid
     //    13  14
     // 23  o<--o
     for (int i = 0; i < 15; i++) {
-        snake.Update(*maze);
+        pacman.Update(*maze);
     }
-    EXPECT_FLOAT_EQ(snake.GetX(), 13.0);
-    EXPECT_FLOAT_EQ(snake.GetY(), 23.0);
+    EXPECT_FLOAT_EQ(pacman.GetX(), 13.0);
+    EXPECT_FLOAT_EQ(pacman.GetY(), 23.0);
     // position after touching wall
     //     5 6      13
     // 22  0
     // 23  0 o<------o
     // 24  0
     for (int i = 0; i < 16 * 7; i++) {
-        snake.Update(*maze);
+        pacman.Update(*maze);
     }
-    EXPECT_FLOAT_EQ(6.0, snake.GetX());
-    EXPECT_FLOAT_EQ(23.0, snake.GetY());
+    EXPECT_FLOAT_EQ(6.0, pacman.GetX());
+    EXPECT_FLOAT_EQ(23.0, pacman.GetY());
     // position not moved
     //     5 6
     // 22  0
     // 23  0 o
     // 24  0
     for (int i = 0; i < 8; i++) {
-        snake.Update(*maze);
+        pacman.Update(*maze);
     }
-    EXPECT_FLOAT_EQ(6.0, snake.GetX());
-    EXPECT_FLOAT_EQ(23.0, snake.GetY());
+    EXPECT_FLOAT_EQ(6.0, pacman.GetX());
+    EXPECT_FLOAT_EQ(23.0, pacman.GetY());
     // position after intersection with holding direction
     //     6 7 8
     // 20  --->o
     // 21  | 0 0 
     // 22  | 0
     // 23  o 0
-    snake.SetDirection(Snake::Direction::kUp);
-    snake.Update(*maze);
-    snake.SetDirection(Snake::Direction::kRight);
+    pacman.SetDirection(Pacman::Direction::kUp);
+    pacman.Update(*maze);
+    pacman.SetDirection(Pacman::Direction::kRight);
     for (int i = 0; i < 15 + 16 * 4; i++) {
-        snake.Update(*maze);
+        pacman.Update(*maze);
     }
-    EXPECT_FLOAT_EQ(8.0, snake.GetX());
-    EXPECT_FLOAT_EQ(20.0, snake.GetY());
+    EXPECT_FLOAT_EQ(8.0, pacman.GetX());
+    EXPECT_FLOAT_EQ(20.0, pacman.GetY());
     // position after trying to enter gate
     //    13        18
     // 11  o-------->| 0
     // 12  2 2 0 0 0 | 0
     // 13          0 o 0
-    snake.SetPos(13, 11);
-    snake.SetDirection(Snake::Direction::kRight);
-    snake.Update(*maze);
-    snake.SetDirection(Snake::Direction::kDown);
+    pacman.SetPos(13, 11);
+    pacman.SetDirection(Pacman::Direction::kRight);
+    pacman.Update(*maze);
+    pacman.SetDirection(Pacman::Direction::kDown);
     for (int i = 0; i < 15 + 16 * 6; i++) {
-        snake.Update(*maze);
+        pacman.Update(*maze);
     }
-    EXPECT_FLOAT_EQ(18.0, snake.GetX());
-    EXPECT_FLOAT_EQ(13.0, snake.GetY());
+    EXPECT_FLOAT_EQ(18.0, pacman.GetX());
+    EXPECT_FLOAT_EQ(13.0, pacman.GetY());
     // position after warping from right
     //       0       27
     // 14 -->o        o->
-    snake.SetPos(27, 14);
-    snake.SetDirection(Snake::Direction::kRight);
+    pacman.SetPos(27, 14);
+    pacman.SetDirection(Pacman::Direction::kRight);
     for (int i = 0; i < 16; i++) {
-        snake.Update(*maze);
+        pacman.Update(*maze);
     }
-    EXPECT_FLOAT_EQ(0.0, snake.GetX());
-    EXPECT_FLOAT_EQ(14.0, snake.GetY());
+    EXPECT_FLOAT_EQ(0.0, pacman.GetX());
+    EXPECT_FLOAT_EQ(14.0, pacman.GetY());
     // position after warping from left
     //       0       27
     // 14 <--o        o<-
-    snake.SetPos(0, 14);
-    snake.SetDirection(Snake::Direction::kLeft);
+    pacman.SetPos(0, 14);
+    pacman.SetDirection(Pacman::Direction::kLeft);
     for (int i = 0; i < 16; i++) {
-        snake.Update(*maze);
+        pacman.Update(*maze);
     }
-    EXPECT_FLOAT_EQ(27.0, snake.GetX());
-    EXPECT_FLOAT_EQ(14.0, snake.GetY());
+    EXPECT_FLOAT_EQ(27.0, pacman.GetX());
+    EXPECT_FLOAT_EQ(14.0, pacman.GetY());
 }
 
 TEST(Maze, ImperfectCsv) {

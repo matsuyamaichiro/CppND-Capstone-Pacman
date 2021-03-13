@@ -1,14 +1,14 @@
 #include "controller.h"
 #include <iostream>
 #include "SDL.h"
-#include "snake.h"
+#include "pacman.h"
 
-void Controller::ChangeDirection(Snake &snake, Snake::Direction input) const {
-  snake.SetDirection(input);
+void Controller::ChangeDirection(Pacman &pacman, Snake::Direction input) const {
+  pacman.SetDirection(input);
   return;
 }
 
-void Controller::HandleInput(bool &running, Snake &snake) const {
+void Controller::HandleInput(bool &running, Pacman &pacman) const {
   SDL_Event e;
   while (SDL_PollEvent(&e)) {
     if (e.type == SDL_QUIT) {
@@ -16,16 +16,16 @@ void Controller::HandleInput(bool &running, Snake &snake) const {
     } else if (e.type == SDL_KEYDOWN) {
       switch (e.key.keysym.sym) {
         case SDLK_UP:
-          ChangeDirection(snake, Snake::Direction::kUp);
+          ChangeDirection(pacman, Snake::Direction::kUp);
           break;
         case SDLK_DOWN:
-          ChangeDirection(snake, Snake::Direction::kDown);
+          ChangeDirection(pacman, Snake::Direction::kDown);
           break;
         case SDLK_LEFT:
-          ChangeDirection(snake, Snake::Direction::kLeft);
+          ChangeDirection(pacman, Snake::Direction::kLeft);
           break;
         case SDLK_RIGHT:
-          ChangeDirection(snake, Snake::Direction::kRight);
+          ChangeDirection(pacman, Snake::Direction::kRight);
           break;
       }
     }

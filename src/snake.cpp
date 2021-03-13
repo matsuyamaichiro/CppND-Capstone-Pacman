@@ -22,10 +22,6 @@ float Snake::GetY() const {
   return _y;
 }
 
-void Snake::SetDirection(Snake::Direction d) {
-  _direction = d;
-}
-
 bool Snake::Move(Direction d, const Maze &maze) {
   bool wasMoved = false;
   //

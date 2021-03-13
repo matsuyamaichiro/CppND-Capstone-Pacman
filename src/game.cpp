@@ -3,7 +3,7 @@
 #include "SDL.h"
 
 Game::Game(std::string filename) : engine(dev()), _maze(filename) {
-  snake.SetPos(_maze.getPacmanSpawnX(), _maze.getPacmanSpawnY());
+  pacman.SetPos(_maze.getPacmanSpawnX(), _maze.getPacmanSpawnY());
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -19,9 +19,9 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    controller.HandleInput(running, snake);
+    controller.HandleInput(running, pacman);
     Update();
-    renderer.Render(_maze, snake, food);
+    renderer.Render(_maze, pacman, food);
 
     frame_end = SDL_GetTicks();
 
@@ -47,16 +47,16 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 }
 
 void Game::Update() {
-  if (!snake.alive) return;
+  if (!pacman.alive) return;
   if (_maze.GetFoodNum() == 0) {
     _maze.GrowWall();
     return;
   }
 
-  snake.Update(_maze);
+  pacman.Update(_maze);
 
-  int new_x = static_cast<int>(snake.GetX() + 0.5);
-  int new_y = static_cast<int>(snake.GetY() + 0.5);
+  int new_x = static_cast<int>(pacman.GetX() + 0.5);
+  int new_y = static_cast<int>(pacman.GetY() + 0.5);
 
   // Check if there's food over here
   //

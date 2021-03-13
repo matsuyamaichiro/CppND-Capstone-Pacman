@@ -5,7 +5,7 @@
 #include "SDL.h"
 #include "controller.h"
 #include "renderer.h"
-#include "snake.h"
+#include "pacman.h"
 #include "maze.h"
 #include <string>
 
@@ -20,7 +20,7 @@ class Game {
 
  private:
   Maze _maze;
-  Snake snake;
+  Pacman pacman;
   SDL_Point food;
 
   std::random_device dev;
