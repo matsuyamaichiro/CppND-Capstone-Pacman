@@ -22,7 +22,6 @@ class Snake {
   void SetDirection(Snake::Direction d);
   void GrowBody();
   bool SnakeCell(int x, int y);
-  int size{1};
   bool alive{true};
 
  private:

@@ -26,7 +26,6 @@ int main(int argc, char *argv[]) {
     game.Run(controller, renderer, kMsPerFrame);
     std::cout << "Game has terminated successfully!\n";
     std::cout << "Score: " << game.GetScore() << "\n";
-    std::cout << "Size: " << game.GetSize() << "\n";
   } catch (std::invalid_argument e) {
     std::cerr << "Error: " << e.what() << std::endl;
     return 0;
