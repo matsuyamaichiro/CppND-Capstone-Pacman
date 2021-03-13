@@ -6,7 +6,7 @@
 TEST(Maze, Whole) {
     Maze maze;
     // based on current maze
-    maze.generateMaze();
+    maze.InitMaze();
     EXPECT_EQ(maze.getH(), 30);
     EXPECT_EQ(maze.getW(), 28);
     EXPECT_EQ(maze.GetFoodNum(), 240);
@@ -81,7 +81,7 @@ TEST(Snake, Whole) {
     constexpr std::size_t kGridHeight{30};
     Maze maze;
     // based on current maze
-    maze.generateMaze();
+    maze.InitMaze();
     Snake snake(kGridWidth, kGridHeight);
     // initial position
     //    14

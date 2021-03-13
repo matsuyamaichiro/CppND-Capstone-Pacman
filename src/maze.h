@@ -2,12 +2,14 @@
 #define MAZE_H
 
 #include <vector>
+#include <string>
+#include <memory>
 
 class Maze {
     public:
         enum class PosType { kWall, kBlank, kGate, kFood, kPowFood};
         enum class Direction {kUp, kDown, kLeft, kRight};
-        void generateMaze();
+        void InitMaze();
         int getW() const;
         int getH() const;
         int getPacmanSpawnX() const;
@@ -18,10 +20,13 @@ class Maze {
         int GetFoodNum() const;
         void GrowWall();
         bool IsGrowing() const;
-
+    protected:
+        std::vector<std::string> Split(std::string& line, char delimiter);
+        std::vector<std::unique_ptr<int[]>> ReadTable(std::string filename);
+        void SetMaze(std::vector<std::unique_ptr<int[]>> table);
     private:
-        int _w;
-        int _h;
+        int _w{28};
+        int _h{30};
         int _pacman_spawn_x;
         int _pacman_spawn_y;
         std::vector<std::vector<PosType>> _maze;

@@ -1,40 +1,7 @@
 #include "maze.h"
 #include <iostream>
-
-constexpr int w = 28;
-constexpr int h = 30;
-constexpr char init_maze[h][w] = {
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,3,3,3,3,3,3,3,3,3,3,3,3,0,0,3,3,3,3,3,3,3,3,3,3,3,3,0,
-    0,3,0,0,0,0,3,0,0,0,0,0,3,0,0,3,0,0,0,0,0,3,0,0,0,0,3,0,
-    0,4,0,0,0,0,3,0,0,0,0,0,3,0,0,3,0,0,0,0,0,3,0,0,0,0,4,0,
-    0,3,0,0,0,0,3,0,0,0,0,0,3,0,0,3,0,0,0,0,0,3,0,0,0,0,3,0,
-    0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,
-    0,3,0,0,0,0,3,0,0,3,0,0,0,0,0,0,0,0,3,0,0,3,0,0,0,0,3,0,
-    0,3,0,0,0,0,3,0,0,3,0,0,0,0,0,0,0,0,3,0,0,3,0,0,0,0,3,0,
-    0,3,3,3,3,3,3,0,0,3,3,3,3,0,0,3,3,3,3,0,0,3,3,3,3,3,3,0,
-    0,0,0,0,0,0,3,0,0,0,0,0,1,0,0,1,0,0,0,0,0,3,0,0,0,0,0,0,
-    0,0,0,0,0,0,3,0,0,0,0,0,1,0,0,1,0,0,0,0,0,3,0,0,0,0,0,0,
-    0,0,0,0,0,0,3,0,0,1,1,1,1,1,1,1,1,1,1,0,0,3,0,0,0,0,0,0,
-    0,0,0,0,0,0,3,0,0,1,0,0,0,2,2,0,0,0,1,0,0,3,0,0,0,0,0,0,
-    0,0,0,0,0,0,3,0,0,1,0,1,1,1,1,1,1,0,1,0,0,3,0,0,0,0,0,0,
-    1,1,1,1,1,1,3,1,1,1,0,1,1,1,1,1,1,0,1,1,1,3,1,1,1,1,1,1,
-    0,0,0,0,0,0,3,0,0,1,0,1,1,1,1,1,1,0,1,0,0,3,0,0,0,0,0,0,
-    0,0,0,0,0,0,3,0,0,1,0,0,0,0,0,0,0,0,1,0,0,3,0,0,0,0,0,0,
-    0,0,0,0,0,0,3,0,0,1,1,1,1,1,1,1,1,1,1,0,0,3,0,0,0,0,0,0,
-    0,0,0,0,0,0,3,0,0,1,0,0,0,0,0,0,0,0,1,0,0,3,0,0,0,0,0,0,
-    0,0,0,0,0,0,3,0,0,1,0,0,0,0,0,0,0,0,1,0,0,3,0,0,0,0,0,0,
-    0,3,3,3,3,3,3,3,3,3,3,3,3,0,0,3,3,3,3,3,3,3,3,3,3,3,3,0,
-    0,3,0,0,0,0,3,0,0,0,0,0,3,0,0,3,0,0,0,0,0,3,0,0,0,0,3,0,
-    0,3,0,0,0,0,3,0,0,0,0,0,3,0,0,3,0,0,0,0,0,3,0,0,0,0,3,0,
-    0,4,3,3,0,0,3,3,3,3,3,3,3,1,5,3,3,3,3,3,3,3,0,0,3,3,4,0,
-    0,0,0,3,0,0,3,0,0,3,0,0,0,0,0,0,0,0,3,0,0,3,0,0,3,0,0,0,
-    0,0,0,3,0,0,3,0,0,3,0,0,0,0,0,0,0,0,3,0,0,3,0,0,3,0,0,0,
-    0,3,3,3,3,3,3,0,0,3,3,3,3,0,0,3,3,3,3,0,0,3,3,3,3,3,3,0,
-    0,3,0,0,0,0,0,0,0,0,0,0,3,0,0,3,0,0,0,0,0,0,0,0,0,0,3,0,
-    0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-};
+#include <fstream>
+#include <sstream>
 
 constexpr Maze::PosType type_encode[] = {
     Maze::PosType::kWall,   // 0
@@ -46,16 +13,39 @@ constexpr Maze::PosType type_encode[] = {
 
 constexpr char pacman_spawn_pos_code = 5;
 
-void Maze::generateMaze() {
-    _w = w;
-    _h = h;
-    _maze.resize(h);
-    for (int j = 0; j < h; j++) {
-        _maze[j].resize(w);
+std::vector<std::string> Maze::Split(std::string& line, char delimiter) {
+    std::istringstream stream(line);
+    std::string field;
+    std::vector<std::string> result;
+    while (std::getline(stream, field, delimiter)) {
+        result.push_back(field);
     }
-    for (int j = 0; j < h; j ++) {
-        for (int i = 0; i < w; i++) {
-            int k = init_maze[j][i];
+    return result;
+}
+
+std::vector<std::unique_ptr<int[]>> Maze::ReadTable(std::string filename) {
+    std::vector<std::unique_ptr<int[]>> table;
+    std::ifstream ifs(filename);
+    std::string line;
+    int j = 0;
+    for (int j = 0; std::getline(ifs, line) && (j < _h); j++) {
+        table.push_back(std::make_unique<int[]>(_w));
+        std::vector<std::string> fields = Split(line, ',');
+        for (int i = 0; (i < fields.size()) && (i < _w); i++) {
+            table[j][i] = stoi(fields.at(i));
+        }
+    }
+    return table;
+}
+
+void Maze::SetMaze(std::vector<std::unique_ptr<int[]>> table) {
+    _maze.resize(_h);
+    for (int j = 0; j < _h; j++) {
+        _maze[j].resize(_w);
+    }
+    for (int j = 0; j < _h; j ++) {
+        for (int i = 0; i < _w; i++) {
+            int k = table[j][i];
             if (k == pacman_spawn_pos_code) {
                 _pacman_spawn_x = i;
                 _pacman_spawn_y = j; 
@@ -70,10 +60,13 @@ void Maze::generateMaze() {
             } else {
                 _maze[j][i] = Maze::PosType::kWall;
             }
-            std::cout << k;
         }
-        std::cout << std::endl;
     }
+}
+
+void Maze::InitMaze() {
+    std::vector<std::unique_ptr<int[]>> table = ReadTable("../src/maze.csv");
+    SetMaze(std::move(table));
 }
 
 int Maze::getW() const {
