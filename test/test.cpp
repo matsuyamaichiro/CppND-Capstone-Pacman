@@ -2,11 +2,11 @@
 
 #include "../src/maze.h"
 #include "../src/snake.h"
+#include "../src/game.h"
 
 TEST(Maze, Whole) {
-    Maze maze;
     // based on current maze
-    maze.InitMaze();
+    Maze maze("../src/maze.csv");
     EXPECT_EQ(maze.getH(), 30);
     EXPECT_EQ(maze.getW(), 28);
     EXPECT_EQ(maze.GetFoodNum(), 240);
@@ -79,9 +79,8 @@ TEST(Maze, Whole) {
 TEST(Snake, Whole) {
     constexpr std::size_t kGridWidth{28};
     constexpr std::size_t kGridHeight{30};
-    Maze maze;
     // based on current maze
-    maze.InitMaze();
+    Maze maze("../src/maze.csv");
     Snake snake(kGridWidth, kGridHeight);
     // initial position
     //    14
@@ -172,4 +171,29 @@ TEST(Snake, Whole) {
     }
     EXPECT_FLOAT_EQ(27.0, snake.GetX());
     EXPECT_FLOAT_EQ(14.0, snake.GetY());
+}
+
+TEST(Maze, ImperfectCsv) {
+    Maze maze("../test/imperfect_maze.csv");
+    // test around top-right corner
+    EXPECT_EQ(maze.getPosType(26, 0), Maze::PosType::kWall);
+    EXPECT_EQ(maze.getPosType(26, 1), Maze::PosType::kWall); // Filled
+    EXPECT_EQ(maze.getPosType(26, 2), Maze::PosType::kFood);
+    EXPECT_EQ(maze.getPosType(25, 1), Maze::PosType::kWall); // Filled
+    EXPECT_EQ(maze.getPosType(27, 1), Maze::PosType::kWall);
+    // test around bottom-left corner
+    EXPECT_EQ(maze.getPosType(1, 28), Maze::PosType::kWall); // Filled
+    EXPECT_EQ(maze.getPosType(1, 27), Maze::PosType::kFood);
+    EXPECT_EQ(maze.getPosType(1, 29), Maze::PosType::kWall); // Filled
+    EXPECT_EQ(maze.getPosType(0, 27), Maze::PosType::kWall); // Filled
+    EXPECT_EQ(maze.getPosType(2, 27), Maze::PosType::kWall); // Filled
+}
+
+TEST(Maze, NoCsv) {
+    ASSERT_THROW(Maze maze(""), std::invalid_argument);
+}
+
+TEST(Game, Whole) {
+    ASSERT_THROW(Game game("", 28, 30), std::invalid_argument);
+    ASSERT_NO_THROW(Game game("../src/maze.csv", 28, 30));
 }

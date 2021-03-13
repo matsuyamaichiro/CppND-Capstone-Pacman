@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <exception>
 
 constexpr Maze::PosType type_encode[] = {
     Maze::PosType::kWall,   // 0
@@ -27,12 +28,25 @@ std::vector<std::unique_ptr<int[]>> Maze::ReadTable(std::string filename) {
     std::vector<std::unique_ptr<int[]>> table;
     std::ifstream ifs(filename);
     std::string line;
+    if (!ifs.good()) {
+        throw std::invalid_argument("Maze csv file cound not open.");
+    }
     int j = 0;
-    for (int j = 0; std::getline(ifs, line) && (j < _h); j++) {
+    for (j = 0; std::getline(ifs, line) && (j < _h); j++) {
         table.push_back(std::make_unique<int[]>(_w));
         std::vector<std::string> fields = Split(line, ',');
-        for (int i = 0; (i < fields.size()) && (i < _w); i++) {
+        int i;
+        for (i = 0; (i < fields.size()) && (i < _w); i++) {
             table[j][i] = stoi(fields.at(i));
+        }
+        for (; i < _w; i++) { // to fill no data field
+            table[j][i] = 0;
+        }
+    }
+    for (; j < _h; j++) { // to fill no data line
+        table.push_back(std::make_unique<int[]>(_w));
+        for (int i = 0; i < _w; i++) {
+            table[j][i] = 0;
         }
     }
     return table;
@@ -64,8 +78,8 @@ void Maze::SetMaze(std::vector<std::unique_ptr<int[]>> table) {
     }
 }
 
-void Maze::InitMaze() {
-    std::vector<std::unique_ptr<int[]>> table = ReadTable("../src/maze.csv");
+Maze::Maze(std::string filename) {
+    std::vector<std::unique_ptr<int[]>> table = ReadTable(filename);
     SetMaze(std::move(table));
 }
 
@@ -86,11 +100,17 @@ int Maze::getPacmanSpawnY() const {
 }
 
 Maze::PosType Maze::getPosType(int x, int y) const {
+    if (x < 0 || x >= _w || y < 0 || y >= _h) {
+        return Maze::PosType::kWall;
+    }
     return _maze[y][x];
 }
 
 bool Maze::isAvailable(int x, int y, Direction d) const {
     PosType dest_type = PosType::kWall;
+    if (x < 0 || x >= _w || y < 0 || y >= _h) {
+        return false;
+    }
     switch (d) {
         case Direction::kDown:
             if (y < _h - 1) {
@@ -129,6 +149,9 @@ bool Maze::isAvailable(int x, int y, Direction d) const {
 }
 
 void Maze::clearFood(int x, int y) {
+    if (x < 0 || x >= _w || y < 0 || y >= _h) {
+        return;
+    }
     switch (getPosType(x, y)) {
         case Maze::PosType::kFood:
         case Maze::PosType::kPowFood:

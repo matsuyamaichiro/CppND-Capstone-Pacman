@@ -9,7 +9,7 @@ class Maze {
     public:
         enum class PosType { kWall, kBlank, kGate, kFood, kPowFood};
         enum class Direction {kUp, kDown, kLeft, kRight};
-        void InitMaze();
+        Maze(std::string filename);
         int getW() const;
         int getH() const;
         int getPacmanSpawnX() const;

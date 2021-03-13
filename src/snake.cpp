@@ -50,6 +50,12 @@ bool Snake::Move(Direction d, const Maze &maze) {
   int x1 = static_cast<int>(_x - _speed + 1.0);
   int y0 = static_cast<int>(_y);
   int y1 = static_cast<int>(_y - _speed + 1.0);
+  if (x1 >= maze.getW()) {
+    x1 = 0;
+  }
+  if (y1 >= maze.getH()) {
+    y1 = 0;
+  }
   switch (d) {
     case Direction::kUp:
       if ((maze.isAvailable(x1, y1, Maze::Direction::kUp)) && (maze.isAvailable(x0, y1, Maze::Direction::kUp))) {

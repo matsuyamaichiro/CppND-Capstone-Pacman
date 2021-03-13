@@ -2,12 +2,12 @@
 #include <iostream>
 #include "SDL.h"
 
-Game::Game(std::size_t grid_width, std::size_t grid_height)
+Game::Game(std::string filename, std::size_t grid_width, std::size_t grid_height)
     : snake(grid_width, grid_height),
       engine(dev()),
       random_w(0, static_cast<int>(grid_width)),
-      random_h(0, static_cast<int>(grid_height)) {
-  _maze.InitMaze();
+      random_h(0, static_cast<int>(grid_height)),
+      _maze(filename) {
   snake.SetPos(_maze.getPacmanSpawnX(), _maze.getPacmanSpawnY());
 }
 
