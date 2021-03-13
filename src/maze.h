@@ -20,11 +20,10 @@ class Maze {
         int GetFoodNum() const;
         void GrowWall();
         bool IsGrowing() const;
-    protected:
+    private:
         std::vector<std::string> Split(std::string& line, char delimiter);
         std::vector<std::unique_ptr<int[]>> ReadTable(std::string filename);
         void SetMaze(std::vector<std::unique_ptr<int[]>> table);
-    private:
         int _w{28}; // not const for future work
         int _h{30}; // not const for future work
         int _pacman_spawn_x{0};
