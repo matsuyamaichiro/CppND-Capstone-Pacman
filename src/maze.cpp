@@ -4,16 +4,25 @@
 #include <sstream>
 #include <exception>
 
-constexpr Maze::PosType type_encode[] = {
+constexpr Maze::PosType kPosTypeEncode[] = {
     Maze::PosType::kWall,   // 0
     Maze::PosType::kBlank,  // 1
     Maze::PosType::kGate,   // 2
     Maze::PosType::kFood,   // 3
     Maze::PosType::kPowFood // 4
 };
+constexpr int kPosTypeSize{sizeof(kPosTypeEncode) / sizeof(Maze::PosType)};
+constexpr int kPosTypeOffset{0};
 
-constexpr char pacman_spawn_pos_code = 5;
-constexpr char monster_spawn_pos_code = 6;
+constexpr Maze::SpawnType kSpawnTypeEncode[] = {
+    Maze::SpawnType::kPacman, // 5
+    Maze::SpawnType::kBlinky, // 6
+    Maze::SpawnType::kPinky,  // 7
+    Maze::SpawnType::kInky,   // 8
+    Maze::SpawnType::kClyde   // 9
+};
+constexpr int kSpawnTypeSize{sizeof(kSpawnTypeEncode) / sizeof(Maze::PosType)};
+constexpr int kSpawnTypeOffset{kPosTypeSize};
 
 std::vector<std::string> Maze::Split(std::string& line, char delimiter) {
     std::istringstream stream(line);
@@ -61,21 +70,25 @@ void Maze::SetMaze(std::vector<std::unique_ptr<int[]>> table) {
     for (int j = 0; j < _h; j ++) {
         for (int i = 0; i < _w; i++) {
             int k = table[j][i];
-            if (k == pacman_spawn_pos_code) {
-                _pacman_spawn_x = i;
-                _pacman_spawn_y = j; 
+            if ((k >= kSpawnTypeOffset) && (k < kSpawnTypeOffset + kSpawnTypeSize)) {
+                switch (kSpawnTypeEncode[k - kSpawnTypeOffset]) {
+                    case SpawnType::kPacman:
+                        _pacman_spawn_x = i;
+                        _pacman_spawn_y = j;
+                        break;
+                    default: // monsters
+                        _monsters_spawn_x.push_back(i);
+                        _monsters_spawn_y.push_back(j);
+                        _monsters_spawn_type.push_back(kSpawnTypeEncode[k - kSpawnTypeOffset]);
+                }
                 _maze[j][i] = Maze::PosType::kBlank;
-            } else if (k == monster_spawn_pos_code) {
-                _monster_spawn_x = i;
-                _monster_spawn_y = j; 
-                _maze[j][i] = Maze::PosType::kBlank;
-            } else if (k < sizeof(type_encode)/sizeof(Maze::PosType)) {
-                _maze[j][i] = type_encode[k];
-                switch (_maze[j][i]) {
+            } else if ((k >= kPosTypeOffset) && (k < kPosTypeOffset + kPosTypeSize)) {
+                switch (kPosTypeEncode[k - kPosTypeOffset]) {
                     case Maze::PosType::kFood:
                     case Maze::PosType::kPowFood:
                         _food_num++;
                 }
+                _maze[j][i] = kPosTypeEncode[k - kPosTypeOffset];
             } else {
                 _maze[j][i] = Maze::PosType::kWall;
             }
@@ -104,12 +117,20 @@ int Maze::getPacmanSpawnY() const {
     return _pacman_spawn_y;
 }
 
-int Maze::getMonsterSpawnX() const {
-    return _monster_spawn_x;
+int Maze::GetMonstersNum() const {
+    return _monsters_spawn_type.size();
 }
 
-int Maze::getMonsterSpawnY() const {
-    return _monster_spawn_y;
+int Maze::GetMonsterSpawnX(int index) const {
+    return _monsters_spawn_x[index];
+}
+
+int Maze::GetMonsterSpawnY(int index) const {
+    return _monsters_spawn_y[index];
+}
+
+Maze::SpawnType Maze::GetMonsterSpawnType(int index) const {
+    return _monsters_spawn_type[index];
 }
 
 Maze::PosType Maze::getPosType(int x, int y) const {

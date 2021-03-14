@@ -2,9 +2,12 @@
 #include <iostream>
 #include "SDL.h"
 
-Game::Game(std::string filename) : engine(dev()), _maze(filename), _pacman(Snake::Color::kYellow), _monster(Snake::Color::kRed) {
+Game::Game(std::string filename) : engine(dev()), _maze(filename), _pacman(Snake::Color::kYellow) {
   _pacman.SetPos(_maze.getPacmanSpawnX(), _maze.getPacmanSpawnY());
-  _monster.SetPos(_maze.getMonsterSpawnX(), _maze.getMonsterSpawnY());
+  for (int i = 0; i < _maze.GetMonstersNum(); i++) {
+    _monsters.push_back(std::move(Monster(Monster::GetColorFromSpawnType(_maze.GetMonsterSpawnType(i)))));
+    _monsters[i].SetPos(_maze.GetMonsterSpawnX(i), _maze.GetMonsterSpawnY(i));
+  }
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -24,8 +27,9 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     Update();
     renderer.RenderMaze(_maze);
     renderer.RenderSnake(_pacman);
-    renderer.RenderSnake(_monster);
-
+    for (int i = 0; i < _maze.GetMonstersNum(); i++) {
+      renderer.RenderSnake(_monsters[i]);
+    }
     frame_end = SDL_GetTicks();
 
     // Keep track of how long each loop through the input/update/render cycle
@@ -57,9 +61,10 @@ void Game::Update() {
   }
 
   _pacman.Update(_maze);
-  _monster.SetDirection(_maze, _pacman.GetX(), _pacman.GetY());
-  _monster.Update(_maze);
-
+  for (int i = 0; i < _maze.GetMonstersNum(); i++) {
+    _monsters[i].SetDirection(_maze, _pacman.GetX(), _pacman.GetY());
+    _monsters[i].Update(_maze);
+  }
   int new_x = static_cast<int>(_pacman.GetX() + 0.5);
   int new_y = static_cast<int>(_pacman.GetY() + 0.5);
 

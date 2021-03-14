@@ -6,7 +6,7 @@
 class Snake {
  public:
   enum class Direction { kUp, kDown, kLeft, kRight };
-  enum class Color {kYellow, kRed};
+  enum class Color {kYellow, kRed, kOrange, kPink, kCyan, kWhite};
   Snake(Color c) : _color(c) {};
   void Update(const Maze &maze);
   void SetPos(int x, int y);

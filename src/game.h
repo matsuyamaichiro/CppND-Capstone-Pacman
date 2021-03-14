@@ -21,7 +21,7 @@ class Game {
  private:
   Maze _maze;
   Pacman _pacman;
-  Monster _monster;
+  std::vector<Monster> _monsters;
   std::random_device dev;
   std::mt19937 engine;
 

@@ -110,7 +110,17 @@ void Renderer::RenderSnake(Snake const snake) {
       case Snake::Color::kRed:
         SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
         break;
-      default: // White
+      case Snake::Color::kOrange:
+        SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xB8, 0x52, 0xFF);
+        break;
+      case Snake::Color::kPink:
+        SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xB8, 0xFF, 0xFF);
+        break;
+      case Snake::Color::kCyan:
+        SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0xFF, 0xFF, 0xFF);
+        break;
+      case Snake::Color::kWhite:
+      default:
         SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     }
   } else {

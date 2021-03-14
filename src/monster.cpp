@@ -76,3 +76,17 @@ void Monster::SetDirection(const Maze &maze, int pacman_x, int pacman_y) {
         }
     }
 }
+
+Snake::Color Monster::GetColorFromSpawnType(Maze::SpawnType type) {
+    switch (type) {
+        case Maze::SpawnType::kBlinky:
+            return Snake::Color::kRed;
+        case Maze::SpawnType::kPinky:
+            return Snake::Color::kPink;
+        case Maze::SpawnType::kInky:
+            return Snake::Color::kCyan;
+        case Maze::SpawnType::kClyde:
+            return Snake::Color::kOrange;
+    }
+    return Snake::Color::kWhite;
+}

@@ -7,6 +7,7 @@ class Monster : public Snake {
     public:
     Monster(Snake::Color c) : Snake(c) {};
     void SetDirection(const Maze &maze, int pacman_x, int pacman_y);
+    static Snake::Color GetColorFromSpawnType(Maze::SpawnType type);
 
     private:
 };
