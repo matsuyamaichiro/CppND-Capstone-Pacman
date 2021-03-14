@@ -13,6 +13,7 @@ constexpr Maze::PosType type_encode[] = {
 };
 
 constexpr char pacman_spawn_pos_code = 5;
+constexpr char monster_spawn_pos_code = 6;
 
 std::vector<std::string> Maze::Split(std::string& line, char delimiter) {
     std::istringstream stream(line);
@@ -64,6 +65,10 @@ void Maze::SetMaze(std::vector<std::unique_ptr<int[]>> table) {
                 _pacman_spawn_x = i;
                 _pacman_spawn_y = j; 
                 _maze[j][i] = Maze::PosType::kBlank;
+            } else if (k == monster_spawn_pos_code) {
+                _monster_spawn_x = i;
+                _monster_spawn_y = j; 
+                _maze[j][i] = Maze::PosType::kBlank;
             } else if (k < sizeof(type_encode)/sizeof(Maze::PosType)) {
                 _maze[j][i] = type_encode[k];
                 switch (_maze[j][i]) {
@@ -97,6 +102,14 @@ int Maze::getPacmanSpawnX() const {
 
 int Maze::getPacmanSpawnY() const {
     return _pacman_spawn_y;
+}
+
+int Maze::getMonsterSpawnX() const {
+    return _monster_spawn_x;
+}
+
+int Maze::getMonsterSpawnY() const {
+    return _monster_spawn_y;
 }
 
 Maze::PosType Maze::getPosType(int x, int y) const {

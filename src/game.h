@@ -5,6 +5,7 @@
 #include "controller.h"
 #include "renderer.h"
 #include "pacman.h"
+#include "monster.h"
 #include "maze.h"
 #include <string>
 
@@ -19,7 +20,8 @@ class Game {
 
  private:
   Maze _maze;
-  Pacman pacman;
+  Pacman _pacman;
+  Monster _monster;
   std::random_device dev;
   std::mt19937 engine;
 

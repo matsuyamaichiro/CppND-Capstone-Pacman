@@ -12,7 +12,8 @@ class Renderer {
            const std::size_t grid_width, const std::size_t grid_height);
   ~Renderer();
 
-  void Render(Maze const maze, Snake const snake);
+  void RenderMaze(Maze const maze);
+  void RenderSnake (Snake const snake);
   void UpdateWindowTitle(int score, int fps);
 
  private:

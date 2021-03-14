@@ -39,7 +39,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Maze const maze, Snake const snake) {
+void Renderer::RenderMaze(Maze const maze) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
@@ -93,12 +93,26 @@ void Renderer::Render(Maze const maze, Snake const snake) {
       }
     }
   }
+}
 
+void Renderer::RenderSnake(Snake const snake) {
+  SDL_Rect block;
+  block.w = screen_width / grid_width;
+  block.h = screen_height / grid_height;
   // Render snake's head
   block.x = static_cast<int>(snake.GetX() * block.w);
   block.y = static_cast<int>(snake.GetY() * block.h);
   if (snake.alive) {
-    SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0x00, 0xFF); // yellow
+    switch (snake.GetColor()) {
+      case Snake::Color::kYellow:
+        SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0x00, 0xFF);
+        break;
+      case Snake::Color::kRed:
+        SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
+        break;
+      default: // White
+        SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    }
   } else {
     SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
   }

@@ -2,6 +2,7 @@
 
 #include "../src/maze.h"
 #include "../src/pacman.h"
+#include "../src/monster.h"
 #include "../src/game.h"
 
 class MazeTest : public ::testing::Test {
@@ -97,7 +98,7 @@ TEST_F(MazeTest, Growing) {
 }
 
 TEST_F(MazeTest, PacmanMoving) {
-    Pacman pacman;
+    Pacman pacman(Snake::Color::kYellow);
     // initial position
     //    14
     // 23  o
@@ -187,6 +188,75 @@ TEST_F(MazeTest, PacmanMoving) {
     }
     EXPECT_FLOAT_EQ(27.0, pacman.GetX());
     EXPECT_FLOAT_EQ(14.0, pacman.GetY());
+}
+
+TEST_F(MazeTest, MonsterMoving) {
+    Pacman pacman(Snake::Color::kYellow);
+    // pacman initial position
+    //    14
+    // 23  o
+    pacman.SetPos(14, 23);
+    Monster monster(Snake::Color::kRed);
+    // monster initial position
+    //    13
+    // 11  @
+    monster.SetPos(13, 11);
+    // position after moving 1 grid
+    //    12  13
+    // 11  @<--@
+    for (int i = 0; i < 16; i++) {
+        monster.SetDirection(*maze, pacman.GetX(), pacman.GetY());
+        monster.Update(*maze);
+    }
+    EXPECT_EQ(12, monster.GetX());
+    EXPECT_EQ(11, monster.GetY());
+    // position after moving 5 grid
+    //     8   9  10  11  12
+    //     0   0   0   0   1
+    // 11  0   |<----------@
+    // 12  0   |
+    // 13  0   @
+    for (int i = 0; i < 16 * 5; i++) {
+        monster.SetDirection(*maze, pacman.GetX(), pacman.GetY());
+        monster.Update(*maze);
+    }
+    EXPECT_EQ(9, monster.GetX());
+    EXPECT_EQ(13, monster.GetY());
+    // position after moving 8 grid
+    //     8   9  10  11  12
+    // 13  0   @   0
+    // 14  1   |   0
+    // 15  0   |   0
+    // 16  0   |   0
+    // 17  0   |   1
+    // 18  0   |   0
+    // 19  0   |   0
+    // 20  0   --->@
+    // 21  0   0   0
+    for (int i = 0; i < 16 * 8; i++) {
+        monster.SetDirection(*maze, pacman.GetX(), pacman.GetY());
+        monster.Update(*maze);
+    }
+    EXPECT_EQ(10, monster.GetX());
+    EXPECT_EQ(20, monster.GetY());
+    // moster position reset
+    //     6
+    // 18  @
+    monster.SetPos(6, 18);
+    EXPECT_EQ(6, monster.GetX());
+    EXPECT_EQ(18, monster.GetY());
+    // position after moving 3 grid
+    //     5   6   7   8
+    // 18  0   @   0   0
+    // 19  0   |   0
+    // 20  3   --->@
+    // 21  0   3   0
+    for (int i = 0; i < 16 * 3; i++) {
+        monster.SetDirection(*maze, pacman.GetX(), pacman.GetY());
+        monster.Update(*maze);
+    }
+    EXPECT_EQ(7, monster.GetX());
+    EXPECT_EQ(20, monster.GetY());
 }
 
 TEST(Maze, ImperfectCsv) {

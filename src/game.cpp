@@ -2,8 +2,9 @@
 #include <iostream>
 #include "SDL.h"
 
-Game::Game(std::string filename) : engine(dev()), _maze(filename) {
-  pacman.SetPos(_maze.getPacmanSpawnX(), _maze.getPacmanSpawnY());
+Game::Game(std::string filename) : engine(dev()), _maze(filename), _pacman(Snake::Color::kYellow), _monster(Snake::Color::kRed) {
+  _pacman.SetPos(_maze.getPacmanSpawnX(), _maze.getPacmanSpawnY());
+  _monster.SetPos(_maze.getMonsterSpawnX(), _maze.getMonsterSpawnY());
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -19,9 +20,11 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    controller.HandleInput(running, pacman);
+    controller.HandleInput(running, _pacman);
     Update();
-    renderer.Render(_maze, pacman);
+    renderer.RenderMaze(_maze);
+    renderer.RenderSnake(_pacman);
+    renderer.RenderSnake(_monster);
 
     frame_end = SDL_GetTicks();
 
@@ -47,16 +50,18 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 }
 
 void Game::Update() {
-  if (!pacman.alive) return;
+  if (!_pacman.alive) return;
   if (_maze.GetFoodNum() == 0) {
     _maze.GrowWall();
     return;
   }
 
-  pacman.Update(_maze);
+  _pacman.Update(_maze);
+  _monster.SetDirection(_maze, _pacman.GetX(), _pacman.GetY());
+  _monster.Update(_maze);
 
-  int new_x = static_cast<int>(pacman.GetX() + 0.5);
-  int new_y = static_cast<int>(pacman.GetY() + 0.5);
+  int new_x = static_cast<int>(_pacman.GetX() + 0.5);
+  int new_y = static_cast<int>(_pacman.GetY() + 0.5);
 
   // Check if there's food over here
   //

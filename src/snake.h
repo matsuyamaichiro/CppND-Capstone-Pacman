@@ -6,20 +6,24 @@
 class Snake {
  public:
   enum class Direction { kUp, kDown, kLeft, kRight };
+  enum class Color {kYellow, kRed};
+  Snake(Color c) : _color(c) {};
   void Update(const Maze &maze);
   void SetPos(int x, int y);
   float GetX() const;
   float GetY() const;
-  void GrowBody();
+  Color GetColor() const;
   bool alive{true};
  protected:
+  bool IsAvailable(Direction d, const Maze &maze);
   Direction _direction{Direction::kLeft};
- private:
-  bool Move(Direction d, const Maze &maze);
-  Direction _hold_direction{Direction::kLeft};
-  float _speed{(float)1/16}; // should be 1/(2^n)
   float _x{0};
   float _y{0};
+ private:
+  void ForceMove(Direction d, int w, int h);
+  Direction _hold_direction{Direction::kLeft};
+  float _speed{(float)1/16}; // should be 1/(2^n)
+  Color _color{Color::kYellow};
 };
 
 #endif
