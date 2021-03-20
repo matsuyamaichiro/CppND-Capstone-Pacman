@@ -1,0 +1,93 @@
+@startuml
+' http://www.plantuml.com/plantuml/uml/ can be used to get a png file. 
+
+class Snake
+class Pacman
+class Monster
+class Game
+class Maze
+class Renderer
+class Controller
+
+Game : +void Run()
+Game : +int GetGridX()
+Game : +int GetGridY()
+Game : -Maze _maze
+Game : -Pacman _pacman
+Game : -std::vector<Monster> _monsters
+Game : -std::random_device dev
+Game : -std::mt19937 engine
+Game : -int score
+Game : -void Update()
+Game *- "1" Maze
+Game *- "1" Pacman
+Game *- "*" Monster
+
+Maze : +int getW()
+Maze : +int getH()
+Maze : +int getPacmanSpawnX()
+Maze : +int getPacmanSpawnY()
+Maze : +int GetMonstersNum()
+Maze : +int GetMonsterSpawnX()
+Maze : +int GetMonsterSpawnY()
+Maze : +SpawnType GetMonsterSpawnType()
+Maze : +PosType getPosType()
+Maze : +bool isAvailable()
+Maze : +void clearFood()
+Maze : +int GetFoodNum()
+Maze : +void GrowWall()
+Maze : +bool IsGrowing()
+Maze : -std::vector<std::string> Split(std::string& line, char delimiter);
+Maze : -std::vector<std::unique_ptr<int[]>> ReadTable(std::string filename);
+Maze : -void SetMaze(std::vector<std::unique_ptr<int[]>> table);
+Maze : -int _w
+Maze : -int _h
+Maze : -int _pacman_spawn_x
+Maze : -int _pacman_spawn_y
+Maze : -std::vector<int> _monsters_spawn_x
+Maze : -std::vector<int> _monsters_spawn_y
+Maze : -std::vector<SpawnType> _monsters_spawn_type
+Maze : -std::vector<std::vector<PosType>> _maze
+Maze : -int _food_num
+Maze : -bool _growing
+Maze <.. Snake
+Maze <.. Renderer
+
+Snake : +void Update()
+Snake : +void SetPos()
+Snake : +float GetX()
+Snake : +float GetY()
+Snake : +Color GetColor()
+Snake : +{static} float speed
+Snake : #bool IsAvailable()
+Snake : #Direction _direction
+Snake : #float _x
+Snake : #float _y
+Snake : -void ForceMove()
+Snake : -Direction _hold_direction
+Snake : -Color _color
+Snake <|-- Pacman
+Snake <|-- Monster
+Snake <.. Renderer
+
+Monster : +void SetDirection()
+Monster : +{static} Snake::Color GetColorFromSpawnType()
+
+Pacman : +void SetDirection()
+Pacman <.. Controller
+
+Renderer : +void RenderMaze()
+Renderer : +void RenderSnake()
+Renderer : +void UpdateWindowTitle()
+Renderer : -SDL_Window *sdl_window
+Renderer : -SDL_Renderer *sdl_renderer
+Renderer : -const std::size_t screen_width
+Renderer : -const std::size_t screen_height
+Renderer : -const std::size_t grid_width
+Renderer : -const std::size_t grid_height
+Renderer <.. Game
+
+Controller : +void HandleInput()
+Controller : -void ChangeDirection()
+Controller <.. Game
+@enduml
