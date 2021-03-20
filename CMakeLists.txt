@@ -14,9 +14,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS} src)
 
-add_executable(SnakeGame src/main.cpp src/game.cpp src/controller.cpp src/renderer.cpp src/snake.cpp src/circle.cpp src/maze.cpp src/pacman.cpp src/monster.cpp)
+add_executable(Pacman src/main.cpp src/game.cpp src/controller.cpp src/renderer.cpp src/snake.cpp src/circle.cpp src/maze.cpp src/pacman.cpp src/monster.cpp)
 string(STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
-target_link_libraries(SnakeGame ${SDL2_LIBRARIES})
+target_link_libraries(Pacman ${SDL2_LIBRARIES})
 
 add_executable(test test/test.cpp src/game.cpp src/controller.cpp src/renderer.cpp src/snake.cpp src/circle.cpp src/maze.cpp src/pacman.cpp src/monster.cpp)
 target_link_libraries(test gtest_main)
