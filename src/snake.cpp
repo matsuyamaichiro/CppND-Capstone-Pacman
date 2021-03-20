@@ -42,15 +42,15 @@ bool Snake::IsAvailable(Direction d, const Maze &maze) {
   //              oooooo        
   // 6 #########################
   //   #########################
-  // (_speed = 0.125)
+  // (speed = 0.125)
   // (_x = 1.125, x0 = 0, x1 = 1)
   // (_y = 5.000, y0 = 5, y1 = 5)
   // [0, 5] and [1, 5] will be checked
   //
   int x0 = static_cast<int>(_x);
-  int x1 = static_cast<int>(_x - _speed + 1.0);
+  int x1 = static_cast<int>(_x - speed + 1.0);
   int y0 = static_cast<int>(_y);
-  int y1 = static_cast<int>(_y - _speed + 1.0);
+  int y1 = static_cast<int>(_y - speed + 1.0);
   if (x1 >= maze.getW()) {
     x1 = 0;
   }
@@ -85,16 +85,16 @@ bool Snake::IsAvailable(Direction d, const Maze &maze) {
 void Snake::ForceMove(Direction d, int w, int h) {
   switch (d) {
     case Direction::kUp:
-      _y -= _speed;
+      _y -= speed;
       break;
     case Direction::kDown:
-      _y += _speed;
+      _y += speed;
       break;
     case Direction::kLeft:
-      _x -= _speed;
+      _x -= speed;
       break;
     case Direction::kRight:
-      _x += _speed;
+      _x += speed;
       break;
   }
   // Wrap the Snake around to the beginning if going off of the screen.

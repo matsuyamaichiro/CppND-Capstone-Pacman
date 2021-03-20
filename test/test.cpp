@@ -110,12 +110,12 @@ TEST_F(MazeTest, PacmanMoving) {
     //    13  14
     // 23     oo
     pacman.Update(*maze);
-    EXPECT_FLOAT_EQ(pacman.GetX(), 14.0 - 1.0/16);
+    EXPECT_FLOAT_EQ(pacman.GetX(), 14.0 - pacman.speed);
     EXPECT_FLOAT_EQ(pacman.GetY(), 23.0);
     // position after moving 1 grid
     //    13  14
     // 23  o<--o
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < (1.0F / pacman.speed) - 1; i++) {
         pacman.Update(*maze);
     }
     EXPECT_FLOAT_EQ(pacman.GetX(), 13.0);
@@ -125,7 +125,7 @@ TEST_F(MazeTest, PacmanMoving) {
     // 22  0
     // 23  0 o<------o
     // 24  0
-    for (int i = 0; i < 16 * 7; i++) {
+    for (int i = 0; i < 7 / pacman.speed; i++) {
         pacman.Update(*maze);
     }
     EXPECT_FLOAT_EQ(6.0, pacman.GetX());
@@ -135,7 +135,7 @@ TEST_F(MazeTest, PacmanMoving) {
     // 22  0
     // 23  0 o
     // 24  0
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 1 / pacman.speed; i++) {
         pacman.Update(*maze);
     }
     EXPECT_FLOAT_EQ(6.0, pacman.GetX());
@@ -149,7 +149,7 @@ TEST_F(MazeTest, PacmanMoving) {
     pacman.SetDirection(Pacman::Direction::kUp);
     pacman.Update(*maze);
     pacman.SetDirection(Pacman::Direction::kRight);
-    for (int i = 0; i < 15 + 16 * 4; i++) {
+    for (int i = 0; i < 5 / pacman.speed - 1; i++) {
         pacman.Update(*maze);
     }
     EXPECT_FLOAT_EQ(8.0, pacman.GetX());
@@ -163,7 +163,7 @@ TEST_F(MazeTest, PacmanMoving) {
     pacman.SetDirection(Pacman::Direction::kRight);
     pacman.Update(*maze);
     pacman.SetDirection(Pacman::Direction::kDown);
-    for (int i = 0; i < 15 + 16 * 6; i++) {
+    for (int i = 0; i < 7 / pacman.speed - 1; i++) {
         pacman.Update(*maze);
     }
     EXPECT_FLOAT_EQ(18.0, pacman.GetX());
@@ -173,7 +173,7 @@ TEST_F(MazeTest, PacmanMoving) {
     // 14 -->o        o->
     pacman.SetPos(27, 14);
     pacman.SetDirection(Pacman::Direction::kRight);
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 1 / pacman.speed; i++) {
         pacman.Update(*maze);
     }
     EXPECT_FLOAT_EQ(0.0, pacman.GetX());
@@ -183,7 +183,7 @@ TEST_F(MazeTest, PacmanMoving) {
     // 14 <--o        o<-
     pacman.SetPos(0, 14);
     pacman.SetDirection(Pacman::Direction::kLeft);
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 1 / pacman.speed; i++) {
         pacman.Update(*maze);
     }
     EXPECT_FLOAT_EQ(27.0, pacman.GetX());
@@ -204,7 +204,7 @@ TEST_F(MazeTest, MonsterMoving) {
     // position after moving 1 grid
     //    12  13
     // 11  @<--@
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 1 / pacman.speed; i++) {
         monster.SetDirection(*maze, pacman.GetX(), pacman.GetY());
         monster.Update(*maze);
     }
@@ -216,7 +216,7 @@ TEST_F(MazeTest, MonsterMoving) {
     // 11  0   |<----------@
     // 12  0   |
     // 13  0   @
-    for (int i = 0; i < 16 * 5; i++) {
+    for (int i = 0; i < 5 / pacman.speed; i++) {
         monster.SetDirection(*maze, pacman.GetX(), pacman.GetY());
         monster.Update(*maze);
     }
@@ -233,7 +233,7 @@ TEST_F(MazeTest, MonsterMoving) {
     // 19  0   |   0
     // 20  0   --->@
     // 21  0   0   0
-    for (int i = 0; i < 16 * 8; i++) {
+    for (int i = 0; i < 8 / pacman.speed; i++) {
         monster.SetDirection(*maze, pacman.GetX(), pacman.GetY());
         monster.Update(*maze);
     }
@@ -251,7 +251,7 @@ TEST_F(MazeTest, MonsterMoving) {
     // 19  0   |   0
     // 20  3   --->@
     // 21  0   3   0
-    for (int i = 0; i < 16 * 3; i++) {
+    for (int i = 0; i < 3 / pacman.speed; i++) {
         monster.SetDirection(*maze, pacman.GetX(), pacman.GetY());
         monster.Update(*maze);
     }

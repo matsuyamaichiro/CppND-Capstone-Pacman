@@ -14,6 +14,7 @@ class Snake {
   float GetY() const;
   Color GetColor() const;
   bool alive{true};
+  static constexpr float speed{(float)1/4}; // should be 1/(2^n)
  protected:
   bool IsAvailable(Direction d, const Maze &maze);
   Direction _direction{Direction::kLeft};
@@ -22,7 +23,6 @@ class Snake {
  private:
   void ForceMove(Direction d, int w, int h);
   Direction _hold_direction{Direction::kLeft};
-  float _speed{(float)1/16}; // should be 1/(2^n)
   Color _color{Color::kYellow};
 };
 

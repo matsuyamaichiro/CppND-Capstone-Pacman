@@ -5,7 +5,7 @@
 #include "renderer.h"
 
 int main(int argc, char *argv[]) {
-  constexpr std::size_t kFramesPerSecond{60};
+  constexpr std::size_t kFramesPerSecond{15};
   constexpr std::size_t kMsPerFrame{1000 / kFramesPerSecond};
   constexpr int kGridSize{20};
 
