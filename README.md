@@ -25,10 +25,14 @@ This project is the Capstone project in the [Udacity C++ Nanodegree Program](htt
     * `git clone git@github.com:matsuyamaichiro/CppND-Capstone-Snake-Game.git --recurse-submodules` with SSH or
     * `git clone https://github.com/matsuyamaichiro/CppND-Capstone-Snake-Game.git --recurse-submodules` with HTML.
     * This project relies on [googletest](https://github.com/google/googletest) as a thirdparty library.
-2. Make a build directory in the top level directory `mkdir build && cd build`
-3. Compile: `cmake .. && make`
-4. Run it: `./Pacman`.
-
+2. Make a build directory in the top level directory
+    * `mkdir build && cd build`
+3. Compile
+    * `cmake .. && make`
+4. Run it
+    * `./Pacman` (if current folder is the build folder) or
+    * `./Pacman ../src/maze.csv` or
+    * `./Pacman ../src/maze_udacity_cpp.csv` (using the extra maze file)
 
 ## How to play
 I hope all you have already known the basic rules of Pacman. But **there are some limitations** explained in Rules below.  
