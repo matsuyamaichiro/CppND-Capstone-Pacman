@@ -61,10 +61,11 @@ Snake : #bool IsAvailable()
 Snake : #Direction _direction
 Snake : #float _x
 Snake : #float _y
+Snake : #Color _color
+Snake : #bool _alive
 Snake : std::mutex _mutex
 Snake : -void ForceMove()
 Snake : -Direction _hold_direction
-Snake : -Color _color
 Snake <|-- Pacman
 Snake <|-- Monster
 
@@ -72,6 +73,8 @@ Monster : +void SetDirection()
 Monster : +{static} Snake::Color GetColorFromSpawnType()
 
 Pacman : +void SetDirection()
+Pacman : +void Eaten()
+Pacman : +bool IsAlive()
 Pacman <.. Controller
 
 Renderer : +void SetMaze()

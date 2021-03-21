@@ -43,20 +43,29 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 }
 
 void Game::Update() {
-  if (!_pacman->alive) return;
+  if (!_pacman->IsAlive()) {
+    return;
+  }
   if (_maze->GetFoodNum() == 0) {
     _maze->GrowWall();
     return;
   }
   _pacman->Update(*_maze);
-  float x, y;
-  _pacman->GetPos(x, y);
+  float px, py, mx, my, dx, dy;
+  _pacman->GetPos(px, py);
   for (int i = 0; i < _maze->GetMonstersNum(); i++) {
-    _monsters[i]->SetDirection(*_maze, x, y);
+    _monsters[i]->SetDirection(*_maze, px, py);
     _monsters[i]->Update(*_maze);
+    _monsters[i]->GetPos(mx, my);
+    dx = px - mx;
+    dy = py - my;
+    if (dx * dx + dy * dy < 1.0F) {
+      _pacman->Eaten();
+      return;
+    }
   }
-  int new_x = static_cast<int>(x + 0.5);
-  int new_y = static_cast<int>(y + 0.5);
+  int new_x = static_cast<int>(px + 0.5);
+  int new_y = static_cast<int>(py + 0.5);
 
   // Check if there's food over here
   //

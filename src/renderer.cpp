@@ -106,29 +106,31 @@ void Renderer::RenderSnakes() {
     _snakes[i]->GetPos(x, y);
     block.x = static_cast<int>(x * block.w);
     block.y = static_cast<int>(y * block.h);
-    if (_snakes[i]->alive) {
-     switch (_snakes[i]->GetColor()) {
-       case Snake::Color::kYellow:
-         SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0x00, 0xFF);
-         break;
-       case Snake::Color::kRed:
-         SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
-         break;
-       case Snake::Color::kOrange:
-         SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xB8, 0x52, 0xFF);
-         break;
-       case Snake::Color::kPink:
-         SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xB8, 0xFF, 0xFF);
-         break;
-       case Snake::Color::kCyan:
-         SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0xFF, 0xFF, 0xFF);
-         break;
-       case Snake::Color::kWhite:
-       default:
-         SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-     }
-    } else {
-     SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
+    switch (_snakes[i]->GetColor()) {
+      case Snake::Color::kYellow:
+        SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0x00, 0xFF);
+        break;
+      case Snake::Color::kRed:
+        SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
+        break;
+      case Snake::Color::kOrange:
+        SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xB8, 0x52, 0xFF);
+        break;
+      case Snake::Color::kPink:
+        SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xB8, 0xFF, 0xFF);
+        break;
+      case Snake::Color::kCyan:
+        SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0xFF, 0xFF, 0xFF);
+        break;
+      case Snake::Color::kWhite:
+        SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        break;
+      case Snake::Color::kBlue:
+        SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x00, 0xFF, 0xFF);
+        break;
+      case Snake::Color::kGray:
+      default:
+        SDL_SetRenderDrawColor(sdl_renderer, 0x80, 0x80, 0x80, 0xFF);
     }
     SDL_RenderFillCircle(sdl_renderer, block.x + block.w / 2, block.y + block.h / 2, block.w / 2);
   }
