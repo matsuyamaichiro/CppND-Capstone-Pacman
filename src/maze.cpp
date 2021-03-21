@@ -39,7 +39,7 @@ std::vector<std::unique_ptr<int[]>> Maze::ReadTable(std::string filename) {
     std::ifstream ifs(filename);
     std::string line;
     if (!ifs.good()) {
-        throw std::invalid_argument("Maze csv file cound not open.");
+        throw std::invalid_argument("Maze csv file could not be opened.");
     }
     int j = 0;
     for (j = 0; std::getline(ifs, line) && (j < _h); j++) {
