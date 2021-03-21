@@ -13,6 +13,7 @@ class Snake {
   void SetPos(int x, int y);
   void GetPos(float &x, float &y);
   Color GetColor() const;
+  void SetDirection(Snake::Direction d);
   static constexpr float speed{(float)1/4}; // should be 1/(2^n)
  protected:
   bool IsAvailable(Direction d, const Maze &maze);

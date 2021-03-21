@@ -56,6 +56,7 @@ Snake : +void Update()
 Snake : +void SetPos()
 Snake : +float GetPos()
 Snake : +Color GetColor()
+Snake : +void SetDirection()
 Snake : +{static} float speed
 Snake : #bool IsAvailable()
 Snake : #Direction _direction
@@ -72,7 +73,6 @@ Snake <|-- Monster
 Monster : +void SetDirection()
 Monster : +{static} Snake::Color GetColorFromSpawnType()
 
-Pacman : +void SetDirection()
 Pacman : +void Eaten()
 Pacman : +bool IsAlive()
 Pacman <.. Controller

@@ -28,6 +28,10 @@ Snake::Color Snake::GetColor() const {
   return _color;
 }
 
+void Snake::SetDirection(Snake::Direction d) {
+  _direction = d;
+}
+
 bool Snake::IsAvailable(Direction d, const Maze &maze) {
   //
   // sample case figure (can not move up)

@@ -216,7 +216,7 @@ TEST_F(MazeTest, MonsterMoving) {
     //    12  13
     // 11  @<--@
     pacman.GetPos(px, py);
-    for (int i = 0; i < 1 / pacman.speed; i++) {
+    for (int i = 0; i < 1 / monster.speed; i++) {
         monster.SetDirection(*maze, px, py);
         monster.Update(*maze);
     }
@@ -229,7 +229,7 @@ TEST_F(MazeTest, MonsterMoving) {
     // 11  0   |<----------@
     // 12  0   |
     // 13  0   @
-    for (int i = 0; i < 5 / pacman.speed; i++) {
+    for (int i = 0; i < 5 / monster.speed; i++) {
         monster.SetDirection(*maze, px, py);
         monster.Update(*maze);
     }
@@ -247,7 +247,7 @@ TEST_F(MazeTest, MonsterMoving) {
     // 19  0   |   0
     // 20  0   --->@
     // 21  0   0   0
-    for (int i = 0; i < 8 / pacman.speed; i++) {
+    for (int i = 0; i < 8 / monster.speed; i++) {
         monster.SetDirection(*maze, px, py);
         monster.Update(*maze);
     }
@@ -267,13 +267,141 @@ TEST_F(MazeTest, MonsterMoving) {
     // 19  0   |   0
     // 20  3   --->@
     // 21  0   3   0
-    for (int i = 0; i < 3 / pacman.speed; i++) {
+    for (int i = 0; i < 3 / monster.speed; i++) {
         monster.SetDirection(*maze, px, py);
         monster.Update(*maze);
     }
     monster.GetPos(mx, my);
     EXPECT_EQ(mx, 7);
     EXPECT_EQ(my, 20);
+    // moster position reset & moving 1 grid
+    //     14  15  16  17  18  19  20  21  22
+    // 19                           0   3   0
+    // 20                           @<--@<- 3
+    // 21                           0   3   0
+    // 22
+    // 23   o
+    monster.SetPos(21, 20);
+    monster.SetDirection(Snake::Direction::kLeft);
+    for (int i = 0; i < 1 / monster.speed; i++) {
+        monster.SetDirection(*maze, px, py);
+        monster.Update(*maze);
+    }
+    monster.GetPos(mx, my);
+    EXPECT_EQ(mx, 20);
+    EXPECT_EQ(my, 20);
+    // moster position reset & moving 1 grid
+    //     14  15  16  17  18  19  20  21  22
+    // 19                           0   3   0
+    // 20                           @<--@   3
+    // 21                           0   |   0
+    // 22
+    // 23   o
+    monster.SetPos(21, 20);
+    monster.SetDirection(Snake::Direction::kUp);
+    for (int i = 0; i < 1 / monster.speed; i++) {
+        monster.SetDirection(*maze, px, py);
+        monster.Update(*maze);
+    }
+    monster.GetPos(mx, my);
+    EXPECT_EQ(mx, 20);
+    EXPECT_EQ(my, 20);
+    // moster position reset & moving 1 grid
+    //     14  15  16  17  18  19  20  21  22
+    // 19                           0   |   0
+    // 20                           @<--@   3
+    // 21                           0   3   0
+    // 22
+    // 23   o
+    monster.SetPos(21, 20);
+    monster.SetDirection(Snake::Direction::kDown);
+    for (int i = 0; i < 1 / monster.speed; i++) {
+        monster.SetDirection(*maze, px, py);
+        monster.Update(*maze);
+    }
+    monster.GetPos(mx, my);
+    EXPECT_EQ(mx, 20);
+    EXPECT_EQ(my, 20);
+    // moster position reset & moving 1 grid
+    //     14  15  16  17  18  19  20  21  22
+    // 19                           0   3   0
+    // 20                           3 ->@   3
+    // 21                           0   @   0
+    // 22
+    // 23   o
+    monster.SetPos(21, 20);
+    monster.SetDirection(Snake::Direction::kRight);
+    for (int i = 0; i < 1 / monster.speed; i++) {
+        monster.SetDirection(*maze, px, py);
+        monster.Update(*maze);
+    }
+    monster.GetPos(mx, my);
+    EXPECT_EQ(mx, 21);
+    EXPECT_EQ(my, 21);
+    // moster position reset & moving 1 grid
+    //     14  15  16  17  18  19  20  21  22
+    // 13                           0   3   0
+    // 14                           1   @<- 1
+    // 15                           0   @   0
+    // ~
+    // 23   o
+    monster.SetPos(21, 14);
+    monster.SetDirection(Snake::Direction::kLeft);
+    for (int i = 0; i < 1 / monster.speed; i++) {
+        monster.SetDirection(*maze, px, py);
+        monster.Update(*maze);
+    }
+    monster.GetPos(mx, my);
+    EXPECT_EQ(mx, 21);
+    EXPECT_EQ(my, 15);
+    // moster position reset & moving 1 grid
+    //     14  15  16  17  18  19  20  21  22
+    // 13                           0   3   0
+    // 14                           @<--@   1
+    // 15                           0   |   0
+    // ~
+    // 23   o
+    monster.SetPos(21, 14);
+    monster.SetDirection(Snake::Direction::kUp);
+    for (int i = 0; i < 1 / monster.speed; i++) {
+        monster.SetDirection(*maze, px, py);
+        monster.Update(*maze);
+    }
+    monster.GetPos(mx, my);
+    EXPECT_EQ(mx, 20);
+    EXPECT_EQ(my, 14);
+    // moster position reset & moving 1 grid
+    //     14  15  16  17  18  19  20  21  22
+    // 13                           0   |   0
+    // 14                           1   @   1
+    // 15                           0   @   0
+    // ~
+    // 23   o
+    monster.SetPos(21, 14);
+    monster.SetDirection(Snake::Direction::kDown);
+    for (int i = 0; i < 1 / monster.speed; i++) {
+        monster.SetDirection(*maze, px, py);
+        monster.Update(*maze);
+    }
+    monster.GetPos(mx, my);
+    EXPECT_EQ(mx, 21);
+    EXPECT_EQ(my, 15);
+    // moster position reset & moving 1 grid
+    //     14  15  16  17  18  19  20  21  22
+    // 13                           0   3   0
+    // 14                           1 ->@   1
+    // 15                           0   @   0
+    // ~
+    // 23   o
+    monster.SetPos(21, 14);
+    monster.SetDirection(Snake::Direction::kDown);
+    for (int i = 0; i < 1 / monster.speed; i++) {
+        monster.SetDirection(*maze, px, py);
+        monster.Update(*maze);
+    }
+    monster.GetPos(mx, my);
+    EXPECT_EQ(mx, 21);
+    EXPECT_EQ(my, 15);
 }
 
 TEST(Maze, ImperfectCsv) {

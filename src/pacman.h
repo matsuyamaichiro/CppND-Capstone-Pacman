@@ -6,7 +6,6 @@
 class Pacman : public Snake {
     public:
         Pacman(Snake::Color c) : Snake(c) {};
-        void SetDirection(Snake::Direction d);
         void Eaten();
         bool IsAlive() const;
     private:
