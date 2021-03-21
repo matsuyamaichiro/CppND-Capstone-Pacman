@@ -13,16 +13,15 @@ void Snake::Update(const Maze &maze) {
 }
 
 void Snake::SetPos(int x, int y) {
+  std::lock_guard<std::mutex> lock(_mutex);
   _x = x;
   _y = y;
 }
 
-float Snake::GetX() const {
-  return _x;
-}
-
-float Snake::GetY() const {
-  return _y;
+void Snake::GetPos(float &x, float &y) {
+  std::lock_guard<std::mutex> lock(_mutex);
+  x = _x;
+  y = _y;
 }
 
 Snake::Color Snake::GetColor() const {
@@ -47,10 +46,12 @@ bool Snake::IsAvailable(Direction d, const Maze &maze) {
   // (_y = 5.000, y0 = 5, y1 = 5)
   // [0, 5] and [1, 5] will be checked
   //
+  std::lock_guard<std::mutex> lock(_mutex);
   int x0 = static_cast<int>(_x);
   int x1 = static_cast<int>(_x - speed + 1.0);
   int y0 = static_cast<int>(_y);
   int y1 = static_cast<int>(_y - speed + 1.0);
+  lock.~lock_guard();
   if (x1 >= maze.getW()) {
     x1 = 0;
   }
@@ -83,6 +84,7 @@ bool Snake::IsAvailable(Direction d, const Maze &maze) {
 }
 
 void Snake::ForceMove(Direction d, int w, int h) {
+  std::lock_guard<std::mutex> lock(_mutex);
   switch (d) {
     case Direction::kUp:
       _y -= speed;

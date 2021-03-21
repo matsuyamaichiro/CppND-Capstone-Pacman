@@ -2,6 +2,7 @@
 #define SNAKE_H
 
 #include "maze.h"
+#include <mutex>
 
 class Snake {
  public:
@@ -10,16 +11,16 @@ class Snake {
   Snake(Color c) : _color(c) {};
   void Update(const Maze &maze);
   void SetPos(int x, int y);
-  float GetX() const;
-  float GetY() const;
+  void GetPos(float &x, float &y);
   Color GetColor() const;
   bool alive{true};
   static constexpr float speed{(float)1/4}; // should be 1/(2^n)
  protected:
   bool IsAvailable(Direction d, const Maze &maze);
-  Direction _direction{Direction::kLeft};
-  float _x{0};
-  float _y{0};
+  Direction _direction{Direction::kLeft}; // thread safe
+  float _x{0}; // nonatomic position param
+  float _y{0}; // nonatomic position param
+  std::mutex _mutex;
  private:
   void ForceMove(Direction d, int w, int h);
   Direction _hold_direction{Direction::kLeft};

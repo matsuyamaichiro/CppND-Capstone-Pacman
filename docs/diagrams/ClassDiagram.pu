@@ -12,16 +12,16 @@ class Controller
 Game : +void Run()
 Game : +int GetGridX()
 Game : +int GetGridY()
-Game : -Maze _maze
-Game : -Pacman _pacman
-Game : -std::vector<Monster> _monsters
+Game : -std::shared_ptr<Maze> _maze
+Game : -std::shared_ptr<Pacman> _pacman
+Game : -std::vector<std::shared_ptr<Monster>> _monsters
 Game : -std::random_device dev
 Game : -std::mt19937 engine
 Game : -int score
 Game : -void Update()
-Game *- "1" Maze
-Game *- "1" Pacman
-Game *- "*" Monster
+Game o- "1" Maze
+Game o- "1" Pacman
+Game o- "*" Monster
 
 Maze : +int getW()
 Maze : +int getH()
@@ -51,24 +51,22 @@ Maze : -std::vector<std::vector<PosType>> _maze
 Maze : -int _food_num
 Maze : -bool _growing
 Maze <.. Snake
-Maze <.. Renderer
 
 Snake : +void Update()
 Snake : +void SetPos()
-Snake : +float GetX()
-Snake : +float GetY()
+Snake : +float GetPos()
 Snake : +Color GetColor()
 Snake : +{static} float speed
 Snake : #bool IsAvailable()
 Snake : #Direction _direction
 Snake : #float _x
 Snake : #float _y
+Snake : std::mutex _mutex
 Snake : -void ForceMove()
 Snake : -Direction _hold_direction
 Snake : -Color _color
 Snake <|-- Pacman
 Snake <|-- Monster
-Snake <.. Renderer
 
 Monster : +void SetDirection()
 Monster : +{static} Snake::Color GetColorFromSpawnType()
@@ -76,18 +74,33 @@ Monster : +{static} Snake::Color GetColorFromSpawnType()
 Pacman : +void SetDirection()
 Pacman <.. Controller
 
-Renderer : +void RenderMaze()
-Renderer : +void RenderSnake()
-Renderer : +void UpdateWindowTitle()
+Renderer : +void SetMaze()
+Renderer : +void AppendSnake()
+Renderer : +void RunRenderer()
+Renderer : +void StopRenderer()
+Renderer : +void SetScore()
+Renderer : -void RenderMaze()
+Renderer : -void RenderSnakes()
+Renderer : -void Render()
+Renderer : -void MainLoop()
+Renderer : -void UpdateWindowTitle()
+Renderer : -std::shared_ptr<Maze> _maze
+Renderer : -std::vector<std::shared_ptr<Snake>> _snakes
 Renderer : -SDL_Window *sdl_window
 Renderer : -SDL_Renderer *sdl_renderer
 Renderer : -const std::size_t screen_width
 Renderer : -const std::size_t screen_height
 Renderer : -const std::size_t grid_width
 Renderer : -const std::size_t grid_height
-Renderer <.. Game
+Renderer : -int _target_frame_duration
+Renderer : -bool _running
+Renderer : -int _score
+Renderer : -std::thread _thread
+Renderer o- "1" Maze
+Renderer o- "*" Snake
+Renderer <. Game
 
 Controller : +void HandleInput()
 Controller : -void ChangeDirection()
-Controller <.. Game
+Controller <. Game
 @enduml

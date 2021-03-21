@@ -8,6 +8,7 @@
 #include "monster.h"
 #include "maze.h"
 #include <string>
+#include <memory>
 
 class Game {
  public:
@@ -19,9 +20,9 @@ class Game {
   int GetGridH() const;
 
  private:
-  Maze _maze;
-  Pacman _pacman;
-  std::vector<Monster> _monsters;
+  std::shared_ptr<Maze> _maze;
+  std::shared_ptr<Pacman> _pacman;
+  std::vector<std::shared_ptr<Monster>> _monsters;
   std::random_device dev;
   std::mt19937 engine;
 

@@ -70,44 +70,44 @@ This information is only for the reviewer of Udacity C++ Nanodegree Program.
 ### Loops, Functions, I/O
 
 | Point                                                                                          | File             | Lines |
-|------------------------------------------------------------------------------------------------|-----------------|-------|
+|------------------------------------------------------------------------------------------------|------------------|-------|
 | The project demonstrates an understanding of C++ functions and control structures.             | all              | -     |
 | The project reads data from a file and process the data, or the program writes data to a file. | [maze.cpp]       | WIP   |
 | The project accepts user input and processes the input.                                        | [controller.cpp] | WIP   |
 
 ### Object Oriented Programming
 
-| Point                                                                            | File                   | Lines          |
-|----------------------------------------------------------------------------------|------------------------|----------------|
-| The project uses Object Oriented Programming techniques.                         | all                    | -              |
-| Classes use appropriate access specifiers for class members.                     | all                    | -              |
-| Class constructors utilize member initialization lists.                          | [game.cpp], [snake.cpp] | WIP            |
-| Classes abstract implementation details from their interfaces.                   |                        |                |
-| Classes encapsulate behavior.                                                    |                        |                |
-| Classes follow an appropriate inheritance hierarchy.                             |                        |                |
-| Overloaded functions allow the same function to operate on different parameters. |                        |                |
-| Derived class functions override virtual base class functions.                   |                        |                |
-| Templates generalize functions in the project.                                   |                        |                |
+| Point                                                                            | File                        | Lines          |
+|----------------------------------------------------------------------------------|-----------------------------|----------------|
+| The project uses Object Oriented Programming techniques.                         | all                         | -              |
+| Classes use appropriate access specifiers for class members.                     | all                         | -              |
+| Class constructors utilize member initialization lists.                          | [game.cpp], [snake.cpp]     | WIP            |
+| Classes abstract implementation details from their interfaces.                   | [snake.h]                   | -              |
+| Classes encapsulate behavior.                                                    | [snake.h], [snake.cpp]      | WIP            |
+| Classes follow an appropriate inheritance hierarchy.                             | [pacman.cpp], [monster.cpp] | WIP            |
+| Overloaded functions allow the same function to operate on different parameters. | -                           | -              |
+| Derived class functions override virtual base class functions.                   | -                           | -              |
+| Templates generalize functions in the project.                                   | -                           | -              |
 
 ### Memory Management
 
 | Point                                                                                     | File            | Lines          |
 |-------------------------------------------------------------------------------------------|-----------------|----------------|
-| The project makes use of references in function declarations.                             |                 |                |
-| The project uses destructors appropriately.                                               |                 |                |
-| The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate. |                 |                |
-| The project follows the Rule of 5.                                                        |                 |                |
-| The project uses move semantics to move data, instead of copying it, where possible.      |                 |                |
-| The project uses smart pointers instead of raw pointers.                                  |                 |                | 
+| The project makes use of references in function declarations.                             | [game.cpp]      | WIP            |
+| The project uses destructors appropriately.                                               | [renderer.cpp]  | WIP            |
+| The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate. | [game.cpp]      | WIP            |
+| The project follows the Rule of 5.                                                        | -               | -              |
+| The project uses move semantics to move data, instead of copying it, where possible.      | [maze.cpp]      | WIP            |
+| The project uses smart pointers instead of raw pointers.                                  | [game.h]        | WIP            | 
 
 ### Concurrency
 
 | Point                                        | File            | Lines          |
 |----------------------------------------------|-----------------|----------------|
-| The project uses multithreading.             |                 |                |
-| A promise and future is used in the project. |                 |                |
-| A mutex or lock is used in the project.      |                 |                |
-| A condition variable is used in the project. |                 |                |   
+| The project uses multithreading.             | [renderer.cpp]  | WIP            |
+| A promise and future is used in the project. | -               | -              |
+| A mutex or lock is used in the project.      | [snake.cpp]     | WIP            |
+| A condition variable is used in the project. | -               | -              |   
 
 [main.cpp]: src/main.cpp
 [game.cpp]: src/game.cpp

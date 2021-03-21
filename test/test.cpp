@@ -98,28 +98,32 @@ TEST_F(MazeTest, Growing) {
 }
 
 TEST_F(MazeTest, PacmanMoving) {
+    float x, y;
     Pacman pacman(Snake::Color::kYellow);
     // initial position
     //    14
     // 23  o
     pacman.SetPos(14, 23);
     pacman.SetDirection(Pacman::Direction::kLeft);
-    EXPECT_FLOAT_EQ(pacman.GetX(), 14.0);
-    EXPECT_FLOAT_EQ(pacman.GetY(), 23.0);
+    pacman.GetPos(x, y);
+    EXPECT_FLOAT_EQ(x, 14.0);
+    EXPECT_FLOAT_EQ(y, 23.0);
     // position after 1 tick
     //    13  14
     // 23     oo
     pacman.Update(*maze);
-    EXPECT_FLOAT_EQ(pacman.GetX(), 14.0 - pacman.speed);
-    EXPECT_FLOAT_EQ(pacman.GetY(), 23.0);
+    pacman.GetPos(x, y);
+    EXPECT_FLOAT_EQ(x, 14.0 - pacman.speed);
+    EXPECT_FLOAT_EQ(y, 23.0);
     // position after moving 1 grid
     //    13  14
     // 23  o<--o
     for (int i = 0; i < (1.0F / pacman.speed) - 1; i++) {
         pacman.Update(*maze);
     }
-    EXPECT_FLOAT_EQ(pacman.GetX(), 13.0);
-    EXPECT_FLOAT_EQ(pacman.GetY(), 23.0);
+    pacman.GetPos(x, y);
+    EXPECT_FLOAT_EQ(x, 13.0);
+    EXPECT_FLOAT_EQ(y, 23.0);
     // position after touching wall
     //     5 6      13
     // 22  0
@@ -128,8 +132,9 @@ TEST_F(MazeTest, PacmanMoving) {
     for (int i = 0; i < 7 / pacman.speed; i++) {
         pacman.Update(*maze);
     }
-    EXPECT_FLOAT_EQ(6.0, pacman.GetX());
-    EXPECT_FLOAT_EQ(23.0, pacman.GetY());
+    pacman.GetPos(x, y);
+    EXPECT_FLOAT_EQ(x, 6.0);
+    EXPECT_FLOAT_EQ(y, 23.0);
     // position not moved
     //     5 6
     // 22  0
@@ -138,8 +143,9 @@ TEST_F(MazeTest, PacmanMoving) {
     for (int i = 0; i < 1 / pacman.speed; i++) {
         pacman.Update(*maze);
     }
-    EXPECT_FLOAT_EQ(6.0, pacman.GetX());
-    EXPECT_FLOAT_EQ(23.0, pacman.GetY());
+    pacman.GetPos(x, y);
+    EXPECT_FLOAT_EQ(x, 6.0);
+    EXPECT_FLOAT_EQ(y, 23.0);
     // position after intersection with holding direction
     //     6 7 8
     // 20  --->o
@@ -152,8 +158,9 @@ TEST_F(MazeTest, PacmanMoving) {
     for (int i = 0; i < 5 / pacman.speed - 1; i++) {
         pacman.Update(*maze);
     }
-    EXPECT_FLOAT_EQ(8.0, pacman.GetX());
-    EXPECT_FLOAT_EQ(20.0, pacman.GetY());
+    pacman.GetPos(x, y);
+    EXPECT_FLOAT_EQ(x, 8.0);
+    EXPECT_FLOAT_EQ(y, 20.0);
     // position after trying to enter gate
     //    13        18
     // 11  o-------->| 0
@@ -166,8 +173,9 @@ TEST_F(MazeTest, PacmanMoving) {
     for (int i = 0; i < 7 / pacman.speed - 1; i++) {
         pacman.Update(*maze);
     }
-    EXPECT_FLOAT_EQ(18.0, pacman.GetX());
-    EXPECT_FLOAT_EQ(13.0, pacman.GetY());
+    pacman.GetPos(x, y);
+    EXPECT_FLOAT_EQ(x, 18.0);
+    EXPECT_FLOAT_EQ(y, 13.0);
     // position after warping from right
     //       0       27
     // 14 -->o        o->
@@ -176,8 +184,9 @@ TEST_F(MazeTest, PacmanMoving) {
     for (int i = 0; i < 1 / pacman.speed; i++) {
         pacman.Update(*maze);
     }
-    EXPECT_FLOAT_EQ(0.0, pacman.GetX());
-    EXPECT_FLOAT_EQ(14.0, pacman.GetY());
+    pacman.GetPos(x, y);
+    EXPECT_FLOAT_EQ(x, 0.0);
+    EXPECT_FLOAT_EQ(y, 14.0);
     // position after warping from left
     //       0       27
     // 14 <--o        o<-
@@ -186,11 +195,13 @@ TEST_F(MazeTest, PacmanMoving) {
     for (int i = 0; i < 1 / pacman.speed; i++) {
         pacman.Update(*maze);
     }
-    EXPECT_FLOAT_EQ(27.0, pacman.GetX());
-    EXPECT_FLOAT_EQ(14.0, pacman.GetY());
+    pacman.GetPos(x, y);
+    EXPECT_FLOAT_EQ(x, 27.0);
+    EXPECT_FLOAT_EQ(y, 14.0);
 }
 
 TEST_F(MazeTest, MonsterMoving) {
+    float px, py, mx, my;
     Pacman pacman(Snake::Color::kYellow);
     // pacman initial position
     //    14
@@ -204,12 +215,14 @@ TEST_F(MazeTest, MonsterMoving) {
     // position after moving 1 grid
     //    12  13
     // 11  @<--@
+    pacman.GetPos(px, py);
     for (int i = 0; i < 1 / pacman.speed; i++) {
-        monster.SetDirection(*maze, pacman.GetX(), pacman.GetY());
+        monster.SetDirection(*maze, px, py);
         monster.Update(*maze);
     }
-    EXPECT_EQ(12, monster.GetX());
-    EXPECT_EQ(11, monster.GetY());
+    monster.GetPos(mx, my);
+    EXPECT_EQ(mx, 12);
+    EXPECT_EQ(my, 11);
     // position after moving 5 grid
     //     8   9  10  11  12
     //     0   0   0   0   1
@@ -217,11 +230,12 @@ TEST_F(MazeTest, MonsterMoving) {
     // 12  0   |
     // 13  0   @
     for (int i = 0; i < 5 / pacman.speed; i++) {
-        monster.SetDirection(*maze, pacman.GetX(), pacman.GetY());
+        monster.SetDirection(*maze, px, py);
         monster.Update(*maze);
     }
-    EXPECT_EQ(9, monster.GetX());
-    EXPECT_EQ(13, monster.GetY());
+    monster.GetPos(mx, my);
+    EXPECT_EQ(mx, 9);
+    EXPECT_EQ(my, 13);
     // position after moving 8 grid
     //     8   9  10  11  12
     // 13  0   @   0
@@ -234,17 +248,19 @@ TEST_F(MazeTest, MonsterMoving) {
     // 20  0   --->@
     // 21  0   0   0
     for (int i = 0; i < 8 / pacman.speed; i++) {
-        monster.SetDirection(*maze, pacman.GetX(), pacman.GetY());
+        monster.SetDirection(*maze, px, py);
         monster.Update(*maze);
     }
-    EXPECT_EQ(10, monster.GetX());
-    EXPECT_EQ(20, monster.GetY());
+    monster.GetPos(mx, my);
+    EXPECT_EQ(mx, 10);
+    EXPECT_EQ(my, 20);
     // moster position reset
     //     6
     // 18  @
     monster.SetPos(6, 18);
-    EXPECT_EQ(6, monster.GetX());
-    EXPECT_EQ(18, monster.GetY());
+    monster.GetPos(mx, my);
+    EXPECT_EQ(mx, 6);
+    EXPECT_EQ(my, 18);
     // position after moving 3 grid
     //     5   6   7   8
     // 18  0   @   0   0
@@ -252,11 +268,12 @@ TEST_F(MazeTest, MonsterMoving) {
     // 20  3   --->@
     // 21  0   3   0
     for (int i = 0; i < 3 / pacman.speed; i++) {
-        monster.SetDirection(*maze, pacman.GetX(), pacman.GetY());
+        monster.SetDirection(*maze, px, py);
         monster.Update(*maze);
     }
-    EXPECT_EQ(7, monster.GetX());
-    EXPECT_EQ(20, monster.GetY());
+    monster.GetPos(mx, my);
+    EXPECT_EQ(mx, 7);
+    EXPECT_EQ(my, 20);
 }
 
 TEST(Maze, ImperfectCsv) {
