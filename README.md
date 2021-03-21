@@ -22,8 +22,7 @@ This project is the Capstone project in the [Udacity C++ Nanodegree Program](htt
 ## Build Instructions
 
 1. Clone this repo.
-    * `git clone git@github.com:matsuyamaichiro/CppND-Capstone-Snake-Game.git --recurse-submodules` with SSH or
-    * `git clone https://github.com/matsuyamaichiro/CppND-Capstone-Snake-Game.git --recurse-submodules` with HTML.
+    * `git clone https://github.com/matsuyamaichiro/CppND-Capstone-Pacman --recurse-submodules`
     * This project relies on [googletest](https://github.com/google/googletest) as a thirdparty library.
 2. Make a build directory in the top level directory
     * `mkdir build && cd build`
